@@ -1,6 +1,6 @@
 package io.wizzie.enricher.builder;
 
-import com.codahale.metrics.JmxAttributeGauge;
+import com.codahale.metrics.jvm.JmxAttributeGauge;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.wizzie.bootstrapper.builder.*;
 import io.wizzie.enricher.base.utils.Utils;
