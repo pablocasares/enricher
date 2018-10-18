@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>enricher</artifactId>
-        <groupId>io.wizzie</groupId>
+        <groupId>io.wizzie.enricher</groupId>
         <version>0.5.1.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>${project.parent.artifactId}-service</artifactId>
-    <name>enricher-service</name>
+    <artifactId>service</artifactId>
+    <name>service</name>
     <description>enricher-service</description>
 
     <dependencies>
@@ -41,13 +41,13 @@
             <version>${config-bootstrapper.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.wizzie</groupId>
-            <artifactId>enricher-base</artifactId>
+            <groupId>io.wizzie.enricher</groupId>
+            <artifactId>base</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.wizzie</groupId>
-            <artifactId>enricher-model</artifactId>
+            <groupId>io.wizzie.enricher</groupId>
+            <artifactId>model</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

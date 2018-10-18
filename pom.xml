@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.wizzie</groupId>
+    <groupId>io.wizzie.enricher</groupId>
     <artifactId>enricher</artifactId>
     <version>0.5.1.2-SNAPSHOT</version>
 
@@ -65,7 +65,7 @@
 
     <modules>
         <module>base</module>
-        <module>enricher-query-compiler</module>
+        <module>query-compiler</module>
         <module>service</module>
         <module>extensions</module>
         <module>model</module>

@@ -3,13 +3,13 @@
 
     <parent>
         <artifactId>enricher</artifactId>
-        <groupId>io.wizzie</groupId>
+        <groupId>io.wizzie.enricher</groupId>
         <version>0.5.1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>enricher-base</artifactId>
+    <artifactId>base</artifactId>
 
     <properties>
         <kafka.version>1.0.0</kafka.version>
