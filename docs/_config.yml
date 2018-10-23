@@ -1,63 +1,47 @@
-# Site title and subtitle. This is used in _includes/header.html
+# Site theme
+remote_theme: "mmistakes/minimal-mistakes"
+minimal_mistakes_skin: "wizzie"
+
+# Site Settings
+locale: "en-US"
 title: 'Enricher'
-subtitle: 'is a stream processing joiner engine based of Kafka Streams.'
-
-# if you wish to integrate disqus on pages set your shortname here
-disqus_shortname: ''
-
-# if you use google analytics, add your tracking id here
-google_analytics_id: ''
-
-# Enable/show navigation. There are there options:
-#   0 - always hide
-#   1 - always show
-#   2 - show only if posts are present
-navigation: 2
-
-# URL to source code, used in _includes/footer.html
-codeurl: 'https://github.com/wizzie-io/enricher'
-
-# Default categories (in order) to appear in the navigation
-sections: [
-    ['home', 'Home'],
-    ['getting', 'Getting Started'],
-    ['conf', 'Configuration'],
-    ['bootstrapper', 'Bootstrapper'],
-    ['joiners', 'Joiners'],
-    ['enrichers', 'Enrichers'],
-    ['docker', 'Dockers'],
-    ['metrics', 'Metrics'],
-    ['internals', 'Internals'],
-    ['customize', 'Customize'],
-    ['limits', 'Limitations']
-]
-
-# Keep as an empty string if served up at the root. If served up at a specific
-# path (e.g. on GitHub pages) leave off the trailing slash, e.g. /my-project
+title_separator: "-"
+name: 'Wizzie Analytics'
 baseurl: '/enricher'
+description: 'Enricher is a stream enriching engine based of Kafka Streams. Enricher does joins (streams and tables) end enrichment with any data store system that you define. You only need to define a JSON stream where you specify the joiners and enrichers to use and your enrichment query.'
+repository: 'wizzie-io/enricher'
 
-# Dates are not included in permalinks
-permalink: none
+# Site search
+search: true
+search_provider: google
+search_full_content: true
 
-# Syntax highlighting
-highlighter: rouge
+google:
+  search_engine_id: 015992723382350682522:qjhaxr18egg
+  instant_search: true
 
-# Since these are pages, it doesn't really matter
-future: true
+google_site_verification: MjIfY0_y_7qIgMjaLFMggPJaLitLhygQ3eodF9Y5ITY
 
-# Exclude non-site files
-exclude: ['bin']
+# Social Sharing
+twitter:
+  username: &twitter "wizzieio"
+og_image: '/assets/images/logo.png'
 
-# Use the kramdown Markdown renderer
-markdown: kramdown
-redcarpet:
-    extensions: [
-        'no_intra_emphasis',
-        'fenced_code_blocks',
-        'autolink',
-        'strikethrough',
-        'superscript',
-        'with_toc_data',
-        'tables',
-        'hardwrap'
-    ]
+defaults:
+  # _docs
+  - scope:
+      path: ""
+    values:
+      toc_sticky: true
+      sidebar:
+        nav: "docs"
+
+# Site Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/wizzieio"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/wizzie-io"

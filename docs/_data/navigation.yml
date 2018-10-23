@@ -1,0 +1,41 @@
+docs:
+  - title: Home
+    url: /
+  - title: Getting Started
+    children:
+      - title: Base Tutorial
+        url: /getting_started/base_tutorial
+
+  - title: Configuration
+    children:
+      - title: Base Configuration
+        url: /configuration/base_configuration
+      - title: Stream Configuration
+        url: /configuration/stream_configuration
+      - title: Enrichment Query Language
+        url: /configuration/sql_syntax
+      - title: Bootstrapper
+        url: /configuration/bootstrapper
+      - title: Metrics
+        url: /configuration/metrics
+      - title: Multi Tenant
+        url: /configuration/multi_tenant
+
+  - title: Joiners & Enrichers
+    children:
+      - title: Joiners
+        url: /joiners_enrichers/joiners
+      - title: Enrichers
+        url: /joiners_enrichers/enrichers
+
+  - title: Docker
+    children:
+      - title: Docker Configuration
+        url: /docker/docker_configuration
+      - title: Docker Example
+        url: /docker/docker_example
+
+  - title: Development
+    children:
+      - title: Custom Joiners
+        url: /development/custom_joiners
