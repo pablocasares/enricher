@@ -96,4 +96,16 @@ public class EnricherQLUnitTest {
         assertEquals(query.replaceAll("\\s+", ""), parser.query().getText());
 
     }
+
+    @Test
+    public void PartitionOutputShouldWork() {
+        String query = "SELECT * FROM STREAM inpunt INSERT INTO TABLE output PARTITION BY myKey";
+
+        ANTLRInputStream inputStream = new ANTLRInputStream(query);
+        EnricherQLLexer lexer = new EnricherQLLexer(inputStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        EnricherQLParser parser = new EnricherQLParser(tokens);
+
+        assertEquals(query.replaceAll("\\s+", ""), parser.query().getText());
+    }
 }

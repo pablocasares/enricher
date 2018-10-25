@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.cookingfox.guava_preconditions.Preconditions.checkNotNull;
+import static io.wizzie.enricher.query.utils.Constants.__KEY;
+
 
 public class Query {
 
@@ -11,6 +13,7 @@ public class Query {
     List<Join> joins;
     List<String> enrichWiths;
     Stream insertTopic;
+    String outputPartitionKey;
 
     public Query(Select select, Stream insertTopic) {
         this(select, insertTopic, Collections.EMPTY_LIST);
@@ -21,10 +24,15 @@ public class Query {
     }
 
     public Query(Select select, Stream insertTopic, List<Join> joins, List<String> enrichWiths) {
+        this(select, insertTopic, joins, enrichWiths, null);
+    }
+
+    public Query(Select select, Stream insertTopic, List<Join> joins, List<String> enrichWiths, String outputPartitionKey) {
         this.select = checkNotNull(select, "SELECT cannot be null");
         this.joins = checkNotNull(joins, "JOINS cannot be null");
         this.insertTopic = checkNotNull(insertTopic, "INSERT cannot be null");
         this.enrichWiths = checkNotNull(enrichWiths, "ENRICH WITH cannot be null");
+        this.outputPartitionKey = outputPartitionKey == null ? __KEY : outputPartitionKey;
     }
 
     public void setSelect(Select newSelect) {
@@ -53,6 +61,14 @@ public class Query {
 
     public Stream getInsert() {
         return insertTopic;
+    }
+
+    public void setOutputPartitionBy(String key) {
+        outputPartitionKey = key;
+    }
+
+    public String getOutputPartitionKey() {
+        return outputPartitionKey;
     }
 
     public void setEnrichWiths(List<String> enrichWiths) {
