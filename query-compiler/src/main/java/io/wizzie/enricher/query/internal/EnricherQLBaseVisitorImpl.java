@@ -47,7 +47,13 @@ public class EnricherQLBaseVisitorImpl extends EnricherQLBaseVisitor {
 
         Stream output = new Stream(ctx.query_output().id().getText(), ctx.query_output().type().getText().matches("TABLE"));
 
-        return new Query(new Select(selectDimensions, selectInputStreams), output, joins, enrichWiths);
+        String outputPartitionKey = null;
+
+        if (ctx.query_output().partitionKey() != null) {
+            outputPartitionKey = ctx.query_output().partitionKey().getText();
+        }
+
+        return new Query(new Select(selectDimensions, selectInputStreams), output, joins, enrichWiths, outputPartitionKey);
     }
 
 }

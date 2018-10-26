@@ -1,0 +1,8 @@
+{
+  "joiners":[
+    {"name":"joinerStream", "className":"io.wizzie.enricher.enrichment.join.impl.StreamPreferredJoiner"}
+  ],
+  "queries": {
+    "query1": "SELECT a,b,c FROM STREAM stream1 JOIN SELECT u,v FROM TABLE stream2 BY b USING joinerStream INSERT INTO STREAM output PARTITION BY c"
+  }
+}

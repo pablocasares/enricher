@@ -6,7 +6,7 @@ query_join: JOIN SELECT dimensions FROM type id (BY partitionKey)? USING classNa
 
 query_enrich_with: ENRICH WITH className;
 
-query_output: INSERT INTO type id;
+query_output: INSERT INTO type id (PARTITION BY partitionKey)?;
 
 type
     : STREAM
@@ -36,6 +36,7 @@ INTO: I N T O;
 ENRICH: E N R I C H;
 WITH: W I T H;
 BY: B Y;
+PARTITION: P A R T I T I O N;
 
 ID : ([a-zA-Z]|UNDERSCORE) ([a-zA-Z0-9]|HYPHEN|UNDERSCORE)*;
 
