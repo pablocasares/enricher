@@ -11,7 +11,6 @@ query_output: INSERT INTO type id (PARTITION BY partitionKey)?;
 type
     : STREAM
     | TABLE
-    | GLOBAL TABLE
     ;
 
 dimensions: (dimWildcard | (id (',' id)*));
@@ -29,7 +28,6 @@ STAR: '*';
 SELECT: S E L E C T;
 FROM: F R O M;
 JOIN: J O I N;
-GLOBAL: G L O B A L;
 TABLE: T A B L E;
 STREAM: S T R E A M;
 USING: U S I N G;
