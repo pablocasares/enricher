@@ -25,6 +25,45 @@ public class EnricherQLUnitTest {
     }
 
     @Test
+    public void JoinWithStreamShouldWork() {
+        String query = "JOIN SELECT * FROM STREAM input USING jClass";
+
+        ANTLRInputStream inputStream = new ANTLRInputStream(query);
+        EnricherQLLexer lexer = new EnricherQLLexer(inputStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        EnricherQLParser parser = new EnricherQLParser(tokens);
+
+        assertEquals(query.replaceAll("\\s+", ""), parser.query_join().getText());
+
+    }
+
+    @Test
+    public void JoinWithTableShouldWork() {
+        String query = "JOIN SELECT * FROM TABLE input USING jClass";
+
+        ANTLRInputStream inputStream = new ANTLRInputStream(query);
+        EnricherQLLexer lexer = new EnricherQLLexer(inputStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        EnricherQLParser parser = new EnricherQLParser(tokens);
+
+        assertEquals(query.replaceAll("\\s+", ""), parser.query_join().getText());
+
+    }
+
+    @Test
+    public void JoinWithGlobalTableShouldWork() {
+        String query = "JOIN SELECT * FROM GLOBAL TABLE input USING jClass";
+
+        ANTLRInputStream inputStream = new ANTLRInputStream(query);
+        EnricherQLLexer lexer = new EnricherQLLexer(inputStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        EnricherQLParser parser = new EnricherQLParser(tokens);
+
+        assertEquals(query.replaceAll("\\s+", ""), parser.query_join().getText());
+
+    }
+
+    @Test
     public void JoinWithByKeyShouldWork() {
         String query = "JOIN SELECT * FROM TABLE input BY key USING jClass";
 
@@ -85,7 +124,7 @@ public class EnricherQLUnitTest {
         String query = "SELECT * FROM STREAM input " +
                 "JOIN SELECT a,b,c FROM STREAM input2 USING jClass1 " +
                 "JOIN SELECT * FROM TABLE input3 USING jClass2 "+
-                "JOIN SELECT x,y FROM STREAM input4 USING jClass3 " +
+                "JOIN SELECT x,y FROM GLOBAL TABLE input4 USING jClass3 " +
                 "INSERT INTO TABLE output";
 
         ANTLRInputStream inputStream = new ANTLRInputStream(query);

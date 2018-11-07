@@ -1,22 +1,38 @@
 grammar EnricherQL;
 
-query: SELECT dimensions FROM type streams (query_join)* (query_enrich_with)* query_output;
+options {
+    language = Java;
+}
 
-query_join: JOIN SELECT dimensions FROM type id (BY partitionKey)? USING className;
+query: SELECT dimensionList FROM STREAM streamList (query_join)* (query_enrich_with)* query_output;
+
+query_join
+    locals [
+    boolean isTable = false,
+    boolean isGlobalTable = false]
+    : JOIN (
+        SELECT dimensionList FROM streamOrTable {
+        if ($streamOrTable.text.equals("TABLE")) $ctx.isTable = true;
+    } | FROM GLOBAL TABLE {
+            $ctx.isTable = true;
+            $ctx.isGlobalTable = true;
+        }
+    ) id (PARTITION? BY partitionKey)? USING className;
+
 
 query_enrich_with: ENRICH WITH className;
 
-query_output: INSERT INTO type id (PARTITION BY partitionKey)?;
+query_output: INSERT INTO streamOrTable id (PARTITION BY partitionKey)?;
 
-type
+streamOrTable
     : STREAM
-    | TABLE
+    | GLOBAL? TABLE
     ;
 
-dimensions: (dimWildcard | (id (',' id)*));
-streams: id (',' id)*;
+dimensionList: (dimWildcard | (id (',' id)*));
+streamList: id (',' id)*;
+className: id ('.' id)*;
 
-className: ID;
 partitionKey: ID;
 id: ID;
 
@@ -37,6 +53,7 @@ ENRICH: E N R I C H;
 WITH: W I T H;
 BY: B Y;
 PARTITION: P A R T I T I O N;
+GLOBAL: G L O B A L;
 
 ID : ([a-zA-Z]|UNDERSCORE) ([a-zA-Z0-9]|HYPHEN|UNDERSCORE)*;
 

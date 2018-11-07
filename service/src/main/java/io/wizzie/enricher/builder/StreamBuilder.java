@@ -16,15 +16,18 @@ import io.wizzie.enricher.query.antlr4.Join;
 import io.wizzie.enricher.query.antlr4.Select;
 import io.wizzie.enricher.query.antlr4.Stream;
 import io.wizzie.metrics.MetricsManager;
-import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.GlobalKTable;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.internals.KStreamImpl;
+import org.apache.kafka.streams.kstream.KeyValueMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.wizzie.enricher.base.utils.Constants.__KEY;
@@ -36,6 +39,7 @@ public class StreamBuilder {
     Config config;
     Map<String, KStream<String, Map<String, Object>>> streams;
     Map<String, KTable<String, Map<String, Object>>> tables;
+    Map<String, GlobalKTable<String, Map<String, Object>>> globalTables;
     Map<String, Joiner> joiners = new HashMap<>();
     Map<String, Enrich> enrichers = new HashMap<>();
     List<String> globalTopics = new LinkedList<>();
@@ -46,6 +50,7 @@ public class StreamBuilder {
         this.metricsManager = metricsManager;
         this.streams = new HashMap<>();
         this.tables = new HashMap<>();
+        this.globalTables = new HashMap<>();
         this.globalTopics = config.getOrDefault(ConfigProperties.GLOBAL_TOPICS, new LinkedList<String>());
     }
 
@@ -113,7 +118,6 @@ public class StreamBuilder {
                     builder.stream(topicStreams);
 
 
-
             List<String> dimensions = selectQuery.getDimensions();
             if (!dimensions.contains("*")) {
                 stream = stream.mapValues(value -> {
@@ -157,6 +161,7 @@ public class StreamBuilder {
                 }
 
                 String tableName;
+                KSTable table;
 
                 if (config.getOrDefault(ConfigProperties.MULTI_ID, false)) {
                     tableName = globalTopics.contains(join.getStream().getName()) ?
@@ -165,52 +170,76 @@ public class StreamBuilder {
                     tableName = join.getStream().getName();
                 }
 
-                KTable<String, Map<String, Object>> table;
+                if (join.getStream().isGlobalTable()) {
+                    GlobalKTable<String, Map<String, Object>> globalKTable = globalTables.get(tableName);
 
-                if (tables.containsKey(tableName)) {
-                    table = tables.get(tableName);
+                    if (globalKTable == null) {
+                        globalKTable = builder.globalTable(tableName);
+                        globalTables.put(tableName, globalKTable);
+                    }
+
+                    table = new KSTable<>(globalKTable);
+
                 } else {
-                    table = builder.table(tableName);
-                    tables.put(tableName, table);
+                    KTable<String, Map<String, Object>> kTable = tables.get(tableName);
+
+                    if (kTable == null) {
+                        kTable = builder.table(tableName);
+                        tables.put(tableName, kTable);
+                    }
+
+                    table = new KSTable<>(kTable);
                 }
 
                 List<String> dimensions = join.getDimensions();
                 if (!dimensions.contains("*")) {
-                    table = table.mapValues(value -> {
-                        Map<String, Object> filterValue = new HashMap<>();
 
-                        dimensions.forEach(dim -> {
-                            if (value.containsKey(dim)) {
-                                filterValue.put(dim, value.get(dim));
-                            }
-                        });
+                    if (table.get() instanceof KTable) {
+                        KTable<String, Map<String, Object>> kTable = (KTable<String, Map<String, Object>>) table.get();
 
-                        return filterValue;
-                    });
+                        table.set(kTable.mapValues(value -> {
+                                    Map<String, Object> filterValue = new HashMap<>();
+
+                                    dimensions.forEach(dim -> {
+                                        if (value.containsKey(dim)) {
+                                            filterValue.put(dim, value.get(dim));
+                                        }
+                                    });
+
+                                    return filterValue;
+                                })
+                        );
+                    }
+
                 }
 
                 KStream<String, Map<String, Object>> stream = streams.get(entry.getKey());
 
                 if (!join.getPartitionKey().equals(__KEY)) {
-                    stream = stream.selectKey((key, value) -> {
-                        String newKey;
-                        if (value.containsKey(join.getPartitionKey())) {
-                            newKey = value.get(join.getPartitionKey()).toString();
-                        } else {
-                            newKey = key;
-                        }
-
-                        return newKey;
-                    });
+                    stream = stream.selectKey(ChangeKeyHelper.apply(join.getPartitionKey()));
                 }
 
                 Joiner joiner = joiners.get(join.getJoinerName());
                 if (joiner == null) throw new JoinerNotFound("BaseJoiner " + join.getJoinerName() + " not found!");
 
                 if (joiner instanceof BaseJoiner) {
-                    stream = stream.leftJoin(table, (BaseJoiner) joiner);
+                    if (table.get() instanceof KTable) {
+                        KTable<String, Map<String, Object>> kTable = (KTable<String, Map<String, Object>>) table.get();
+                        stream = stream.leftJoin(kTable, (BaseJoiner) joiner);
+                    } else {
+                        GlobalKTable<String, Map<String, Object>> globalKTable = (GlobalKTable<String, Map<String, Object>>) table.get();
+                        stream = stream.leftJoin(globalKTable, ChangeKeyHelper.apply(join.getPartitionKey()), (BaseJoiner) joiner);
+                    }
                 } else if (joiner instanceof QueryableJoiner) {
-                    KStream<String, Map<String, Object>> joinStream = stream.leftJoin(table, (QueryableJoiner) joiner);
+                    KStream<String, Map<String, Object>> joinStream;
+
+                    if (table.get() instanceof KTable) {
+                        KTable<String, Map<String, Object>> kTable = (KTable<String, Map<String, Object>>) table.get();
+                        joinStream = stream.leftJoin(kTable, (QueryableJoiner) joiner);
+                    } else {
+                        GlobalKTable<String, Map<String, Object>> globalKTable = (GlobalKTable<String, Map<String, Object>>) table.get();
+                        joinStream = stream.leftJoin(globalKTable, ChangeKeyHelper.apply(join.getPartitionKey()), (QueryableJoiner) joiner);
+                    }
 
                     joinStream
                             .branch((key, value) -> !((Boolean) value.get("joiner-status")))[0]
@@ -223,8 +252,18 @@ public class StreamBuilder {
                             .to("__enricher_queryable");
 
                     stream = joinStream.mapValues(message -> (Map<String, Object>) message.get("message"));
+
                 } else if (joiner instanceof QueryableBackJoiner) {
-                    KStream<String, Map<String, Object>> joinStream = stream.leftJoin(table, (QueryableBackJoiner) joiner);
+
+                    KStream<String, Map<String, Object>> joinStream;
+
+                    if (table.get() instanceof KTable) {
+                        KTable<String, Map<String, Object>> kTable = (KTable<String, Map<String, Object>>) table.get();
+                        joinStream = stream.leftJoin(kTable, (QueryableBackJoiner) joiner);
+                    } else {
+                        GlobalKTable<String, Map<String, Object>> globalKTable = (GlobalKTable<String, Map<String, Object>>) table.get();
+                        joinStream = stream.leftJoin(globalKTable, ChangeKeyHelper.apply(join.getPartitionKey()), (QueryableBackJoiner) joiner);
+                    }
 
                     joinStream
                             .branch((key, value) -> !((Boolean) value.get("joiner-status")))[0]
@@ -287,17 +326,7 @@ public class StreamBuilder {
             KStream<String, Map<String, Object>> stream = streams.get(entry.getKey());
 
             if (!outputPartitionKey.equals(__KEY)) {
-                stream = stream.selectKey((key, value) -> {
-                    String newKey = key;
-
-                    Object keyValue = value.get(outputPartitionKey);
-
-                    if (keyValue != null) {
-                        newKey = keyValue.toString();
-                    }
-
-                    return newKey;
-                });
+                stream = stream.selectKey(ChangeKeyHelper.apply(outputPartitionKey));
             }
 
             String outputStream = insert.getName();
@@ -313,6 +342,7 @@ public class StreamBuilder {
     private void clean() {
         streams.clear();
         tables.clear();
+        globalTables.clear();
         joiners.clear();
         enrichers.clear();
     }

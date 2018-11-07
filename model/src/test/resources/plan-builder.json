@@ -14,6 +14,6 @@
   "queries": {
     "query1": "SELECT * FROM STREAM rb_input JOIN SELECT a,b FROM STREAM rb_input2 USING joiner ENRICH WITH enricher INSERT INTO TABLE rb_output",
     "query2": "SELECT i,j,k,l FROM STREAM rb_input, rb_input2 JOIN SELECT a,b,c FROM STREAM rb_input3 USING joiner1 JOIN SELECT * FROM TABLE rb_input4 USING joinerPkg2Class2 JOIN SELECT x,y FROM STREAM rb_input5 USING jClass3 ENRICH WITH enricher1 INSERT INTO TABLE rb_output",
-    "query3": "SELECT * FROM TABLE rb_input JOIN SELECT a,b,c FROM TABLE rb_input2 USING joiner1 JOIN SELECT * FROM STREAM rb_input3 USING jClass2 ENRICH WITH enricherPkg1Class2 INSERT INTO STREAM rb_output"
+    "query3": "SELECT * FROM STREAM rb_input JOIN SELECT a,b,c FROM TABLE rb_input2 USING joiner1 JOIN SELECT * FROM STREAM rb_input3 USING jClass2 ENRICH WITH enricherPkg1Class2 INSERT INTO STREAM rb_output"
   }
 }

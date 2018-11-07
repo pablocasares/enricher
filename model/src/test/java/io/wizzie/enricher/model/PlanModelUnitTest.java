@@ -246,7 +246,7 @@ public class PlanModelUnitTest {
         Stream stream3_1 = select3_1Streams.get(0);
 
         assertEquals("rb_input", stream3_1.getName());
-        assertTrue(stream3_1.isTable());
+        assertFalse(stream3_1.isTable());
 
         // ******************************************* Query3: Joins *********************************************//
         List<Join> joins3_1 = query3.getJoins();

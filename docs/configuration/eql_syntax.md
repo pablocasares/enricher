@@ -36,9 +36,13 @@ Where:
 - `<stream-name>` : The selected stream from which enricher will get data.
 - `<joiner-name>` : The selected joiner in enrichment config json.
 
-#### Optional BY
+#### GLOBAL TABLE
 
-The `BY` clause allows us partition by field instead of stream's key. However this clause creates a new internal topic and need to write/read all messages.
+The `FROM GLOBAL TABLE` clause allows us use a stream as [Kafka Stream GlobalKTable](https://docs.confluent.io/current/streams/concepts.html#globalktable).
+
+#### Optional PARTITION BY
+
+The `PARTITION BY` clause allows us partition by field instead of stream's key. However this clause creates a new internal topic and need to write/read all messages.
 
 We are going to illustrate this behaviour in next diagram:
 
