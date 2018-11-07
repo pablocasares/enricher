@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="docs/assets/img/enricher.logo.svg" alt="Enricher" title="Enricher" width="250%"/>
+    <img src="docs/assets/images/logo.svg" alt="Enricher" title="Enricher" width="250%"/>
 </p>
 
 [![CircleCI](https://circleci.com/gh/wizzie-io/enricher/tree/master.svg?style=shield)](https://circleci.com/gh/wizzie-io/enricher/tree/master)
