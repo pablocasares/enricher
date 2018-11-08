@@ -24,7 +24,7 @@ The GeoIpEnrich allow us enrich streams with information about IP location, inte
 ```json
 {
   "name":"geoIp",
-  "className":"io.wizzie.enricher.enrichment.geoip.GeoIpEnrichr",
+  "className":"io.wizzie.enricher.enrichment.geoip.GeoIpEnricher",
   "properties": {
     "src.dim": "src_ip",
     "dst.dim": "dst_ip",
