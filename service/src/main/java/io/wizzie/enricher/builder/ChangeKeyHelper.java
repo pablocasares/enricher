@@ -12,8 +12,10 @@ public class ChangeKeyHelper {
             String newKey = key;
 
             if (!keyName.equals(__KEY)) {
-                Object keyValue = value.get(keyName);
-                if (keyValue != null) newKey = keyValue.toString();
+                if (value != null) {
+                    Object keyValue = value.get(keyName);
+                    if (keyValue != null) newKey = keyValue.toString();
+                }
             }
 
             return newKey;
