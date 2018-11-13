@@ -4,62 +4,56 @@ import io.wizzie.enricher.query.antlr4.Join;
 import io.wizzie.enricher.query.antlr4.Query;
 import io.wizzie.enricher.query.antlr4.Select;
 import io.wizzie.enricher.query.antlr4.Stream;
-import io.wizzie.enricher.query.compiler.EnricherQLBaseVisitor;
 import io.wizzie.enricher.query.compiler.EnricherQLParser;
-import io.wizzie.enricher.query.utils.Constants;
+import io.wizzie.enricher.query.compiler.EnricherQLParserBaseVisitor;
+import org.antlr.v4.runtime.RuleContext;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EnricherQLBaseVisitorImpl extends EnricherQLBaseVisitor {
+public class EnricherQLBaseVisitorImpl extends EnricherQLParserBaseVisitor {
+
 
     @Override
-    public Query visitQuery(EnricherQLParser.QueryContext ctx) {
-        List<String> selectDimensions = ctx.dimensionList().id().stream().map(id -> id.getText()).collect(Collectors.toList());
+    public Query visitQuery(EnricherQLParser.QueryContext queryContext) {
+
+        List<String> selectDimensions = queryContext.selectStatement().dimensionList().id().stream().map(RuleContext::getText).collect(Collectors.toList());
 
         if (selectDimensions.isEmpty())
             selectDimensions = Collections.singletonList("*");
 
-        List<Stream> selectInputStreams = ctx.streamList().id().stream().map(id -> new Stream(id.getText())).collect(Collectors.toList());
 
-        List<Join> joins = ctx.query_join().stream().map(joinContext -> {
+        List<Stream> selectInputStreams = queryContext.selectStatement().streamList().id().stream().map(id -> new Stream(id.getText())).collect(Collectors.toList());
+
+        List<Join> joins = queryContext.selectStatement().joinStatement().stream().map(joinContext -> {
 
             List<String> joinDimensions = Collections.emptyList();
 
-            if (!joinContext.isGlobalTable) {
-                if (!joinContext.streamOrTable().isEmpty()) {
-                    joinDimensions = joinContext.dimensionList().id().stream().map(id -> id.getText()).collect(Collectors.toList());
+            if (!joinContext._isGlobalTable) {
+                if (!joinContext.selectStreamOrTableStatement().streamOrTable.isEmpty()) {
+                    joinDimensions = joinContext.selectStreamOrTableStatement().dimensionList().id().stream().map(id -> id.getText()).collect(Collectors.toList());
 
                     if(joinDimensions.isEmpty())
                         joinDimensions = Collections.singletonList("*");
                 }
             }
 
-            String className = joinContext.className().getText();
-            String joinStream = joinContext.id().getText();
+            Stream stream = new Stream(joinContext._streamName, joinContext._isTable, joinContext._isGlobalTable);
 
-            EnricherQLParser.PartitionKeyContext partitionKeyContext;
+            return new Join(stream, joinContext._joinerName, joinDimensions, joinContext._partitionKey);
 
-            String partitionKey = ( partitionKeyContext = joinContext.partitionKey()) != null ? partitionKeyContext.getText() : Constants.__KEY;
-
-            Stream stream = new Stream(joinStream, joinContext.isTable, joinContext.isGlobalTable);
-
-            return new Join(stream, className, joinDimensions, partitionKey);
         }).collect(Collectors.toList());
 
-        List<String> enrichWiths = ctx.query_enrich_with().stream().map(enrichContext -> new String(enrichContext.className().getText())).collect(Collectors.toList());
 
-        Stream output = new Stream(ctx.query_output().id().getText(), ctx.query_output().streamOrTable().getText().matches("TABLE"));
+        List<String> enrichWiths = queryContext.selectStatement().enrichStatement().stream().map(enrichContext -> enrichContext._enricherName).collect(Collectors.toList());
 
-        String outputPartitionKey = null;
+        EnricherQLParser.OutputStatementContext outputContext = queryContext.selectStatement().outputStatement();
 
-        if (ctx.query_output().partitionKey() != null) {
-            outputPartitionKey = ctx.query_output().partitionKey().getText();
-        }
+        Stream output = new Stream(outputContext._streamName, outputContext._isTable);
+
+        String outputPartitionKey = outputContext._partitionKey;
 
         return new Query(new Select(selectDimensions, selectInputStreams), output, joins, enrichWiths, outputPartitionKey);
     }
-
 }
