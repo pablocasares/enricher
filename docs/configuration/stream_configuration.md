@@ -39,10 +39,10 @@ The enrichers have three properties:
 * `name`: The enricher's name.
 * `className`: The enricher class reference.
 
-Currently, the enricher has three joiner types: [Base Joiner](http://wizzie-io.github.io/enricher/joiners/base-joiners.html), [Queryable Joiner](http://wizzie-io.github.io/enricher/joiners/queryable-joiners.html), [QueryableBack Joiner](http://wizzie-io.github.io/enricher/joiners/queryableback-joiners.html)
+Currently, the enricher has three joiner types: [Base Joiner](https://wizzie-io.github.io/enricher/joiners_enrichers/joiners#base-joiner), [Queryable Joiner](https://wizzie-io.github.io/enricher/joiners_enrichers/joiners#queryable-joiner), [QueryableBack Joiner](https://wizzie-io.github.io/enricher/joiners_enrichers/joiners#queryableback-joiner)
 
 ## Queries
 
-Finally, the queries are the enrichment logic that you can define using the [SQL Syntax](http://wizzie-io.github.io/enricher/conf/sql-syntax.html). You can define multiple queries, inside the queries you can use the enricher and joiner definitions.
+Finally, the queries are the enrichment logic that you can define using the [EQL Syntax](https://wizzie-io.github.io/enricher/configuration/eql_syntax). You can define multiple queries, inside the queries you can use the enricher and joiner definitions.
 
 The `queries` property is a JSON Object where the `key` is the query's name and the `value` is the query.

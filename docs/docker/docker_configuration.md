@@ -40,7 +40,7 @@ Once kafka broker is up, we can start a Enricher container and link it to the ka
 ```
 $ docker run --rm --name my-enricher --net=host -e APPLICATION_ID=my-enricher-app -e KAFKA_BOOTSTRAP_SERVER=localhost:9092 wizzieio/enricher:latest
 ```
-Now you can follow the [base tutorial](http://www.wizzie-io.github.io/enricher/getting_started/base_tutorial) to test Enricher!
+Now you can follow the [base tutorial](https://wizzie-io.github.io/enricher/getting_started/base_tutorial) to test Enricher!
 
 ### Using environment variables in enricher configuration
 

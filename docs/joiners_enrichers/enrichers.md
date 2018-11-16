@@ -8,7 +8,9 @@ The Base Enrich is a simple enricher that complements the information of receive
 
 The enrichment system can be either SQL or NoSQL database, a CSV file or any other data store system.
 
-![](../assets/images/basenrich_concept.png?raw=true)
+<figure>
+    <a href="{{ '/assets/images/simple_enrich.png' | relative_url }}"><img src="{{ '/assets/images/simple_enrich.png' | relative_url }}"></a>
+</figure>
 
 Image above represents the base enrich behaviour:
 
@@ -16,7 +18,8 @@ Image above represents the base enrich behaviour:
 2. Enricher enrich the received message with a external data store system.
 3. Enricher sends the enrich message to `output` topic.
 
-***It important to emphasise that a message doesn't need to have a key like the joiners.***
+**It important to emphasise that a message doesn't need to have a key like the joiners.**
+{: .notice--info}
 
 ### GeoIpEnrich
 The GeoIpEnrich allow us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
@@ -95,7 +98,7 @@ This enricher process a message and return the mac vendor field. Not all mac add
 {"client_mac": "3c:ab:8e:12:34:56"}
 ```
 
-***Output:**
+**Output:**
 
 ```json
 {"client_mac": "3c:ab:8e:12:34:56", "client_mac_vendor":"Apple"}

@@ -4,8 +4,7 @@ layout: single
 toc: true
 ---
 
-
-*Enrichment Query Language* (EQL) is a query language written in ANTLR that allows us define that streams and fields to use and join. Before we look into details of the EQL, let's take a look at a few definitions of terms.
+*Enrichment Query Language* (EQL) is a query language generated with [ANTLR](https://www.antlr.org/) that allows us define that streams and fields to use and join. Before we look into details of the EQL, let's take a look at a few definitions of terms.
 
 |Term|Definition|
 |----------|----------|
@@ -15,12 +14,13 @@ toc: true
 |Joiner|A joiner merges two streams or tables based on the keys of their data records, and yields a new stream|
 |Enricher| An enricher add relational information about events |
 
-
 ## Queries
 
 Following provides an abstract diagram definition for EQL.
 
-![](../assets/images/eql_syntax.png?raw=true)
+<figure>
+    <a href="{{ '/assets/images/eql_syntax.png' | relative_url }}"><img src="{{ '/assets/images/eql_syntax.png' | relative_url }}"></a>
+</figure>
 
 ### Joiners
 
@@ -28,7 +28,7 @@ A joiner merges two streams or tables based on the keys of their data records, a
 
 Joiner basic syntax is as follows:
 
-`JOIN SELECT <comma-separated-fields or *> FROM (TABLE|STREAM) <stream-name> [BY <field-name>] USING <joiner-name>`
+`JOIN SELECT <comma-separated-fields or *> FROM (TABLE|STREAM) <stream-name> [[PARTITION] BY <field-name>] USING <joiner-name>`
 
 Where:
 
@@ -42,11 +42,11 @@ The `FROM GLOBAL TABLE` clause allows us use a stream as [Kafka Stream GlobalKTa
 
 #### Optional PARTITION BY
 
-The `PARTITION BY` clause allows us partition by field instead of stream's key. However this clause creates a new internal topic and need to write/read all messages.
+The `[PARTITION] BY` clause allows us partition by field instead of stream's key. We are going to illustrate this behaviour in next diagram:
 
-We are going to illustrate this behaviour in next diagram:
-
-![](../assets/images/joiner_partition_by.png?raw=true)
+<figure>
+    <a href="{{ '/assets/images/joiner_partition_by.png' | relative_url }}"><img src="{{ '/assets/images/joiner_partition_by.png' | relative_url }}"></a>
+</figure>
 
 ### Enrichers
 
@@ -57,13 +57,14 @@ Enricher basic syntax is as follows:
 `ENRICH WITH <enricher-name>`
 
 Where:
+
 - `<enricher-name>` : The selected enricher in enrichment configuration json.
 
 An enricher can be any data source that works with Json messages.
 
 ### Output Stream
 
-The `INSERT INTO` clause allows us to define what stream to use as the output stream, this clause can be complemented with `PARTITION BY` clause that allows us repartition the output stream by a field. If we omit the `PARTITION BY` clause, the enricher will use the current partition key of the input stream.
+The `INSERT INTO` clause allows us to define what stream to use as the output stream, this clause can be complemented with `PARTITION BY` clause that allows us repartition the output stream by a specific field. If we omit the `PARTITION BY` clause, the enricher will use the current partition key of the input stream.
 
 ## Examples
 
@@ -71,46 +72,58 @@ The `INSERT INTO` clause allows us to define what stream to use as the output st
 
 Suppose that we have two streams with fields:
 
-- **inputStreamA**: fieldA and fieldB
-- **inputStreamX**: fieldX and fieldY
+- **inputStream1**: fieldA and fieldB
+- **inputStream2**: fieldC and fieldD
 
 If we define next query:
 ```sql
-SELECT fieldA, fieldB, fieldY FROM inputStreamA, inputStreamB INSERT INTO STREAM outputStream
+SELECT fieldA, fieldB, fieldC FROM inputStream1, inputStream2 INSERT INTO STREAM output
 ```
 
-Enricher extracts fieldA, fieldB and fieldY from both inputStreamA and inputStreamB if exists and inserts them in outputStream.
+Enricher extracts fieldA, fieldB and fieldC from both inputStream1 and inputStream2 if exists and inserts them in output.
 
 This query is very simple and not enrich, Enricher only extracts and inserts fields.
-![](../assets/images/simple_extract.png?raw=true)
+
+<figure>
+    <a href="{{ '/assets/images/simple_extraction.png' | relative_url }}"><img src="{{ '/assets/images/simple_extraction.png' | relative_url }}"></a>
+</figure>
 
 ### Simple streams join
 
 If we define next query
 
 ```sql
-SELECT * FROM STREAM inputStreamA JOIN SELECT fieldY FROM STREAM inputStreamX USING simpleStreamPreferredJoiner INSERT INTO STREAM outputStream
+SELECT * FROM STREAM inputStream1 JOIN SELECT fieldY FROM STREAM inputStream2 USING simpleStreamPreferredJoiner INSERT INTO STREAM output
 ```
 
-Enricher extracts all fields from intputStreamA and join them with the fieldY from inputStreamX using simpleStreamPreferredJoiner in order to do it is necessary that the streams share the same key.
+Enricher extracts all fields from intputStream1 and join them with the fieldY from inputStream2 using simpleStreamPreferredJoiner in order to do it is necessary that the streams share the same key.
 
-![](../assets/images/simple_join.png?raw=true)
+<figure>
+    <a href="{{ '/assets/images/simple_join.png' | relative_url }}"><img src="{{ '/assets/images/simple_join.png' | relative_url }}"></a>
+</figure>
 
 ### Simple streams enrich
 
 If we define next query
-```sql
-SELECT * FROM STREAM inputStreamA ENRICH WITH simpleStreamEnrich INSERT INTO STREAM outputSTREAM
-```
-Enricher extracts all fields from inputStreamA and enrich with simpleStreamEnrich using as data source a relational database.
 
-![](../assets/images/simple_enrich.png?raw=true)
+```sql
+SELECT * FROM STREAM input ENRICH WITH simpleStreamEnrich INSERT INTO STREAM output
+```
+
+Enricher extracts all fields from input and enrich with simpleStreamEnrich using as data source a relational database.
+
+<figure>
+    <a href="{{ '/assets/images/simple_enrich.png' | relative_url }}"><img src="{{ '/assets/images/simple_enrich.png' | relative_url }}"></a>
+</figure>
 
 ### Complex streams enrich and join
 
 Suppose that we have a system with data about **flow** and **location** and we have a key-value store with information about ip **reputation**:
 
-![](../assets/images/complex_join_and_enrich.png?raw=true)
+<figure>
+    <a href="{{ '/assets/images/complex_join_and_enrich.png' | relative_url }}"><img src="{{ '/assets/images/complex_join_and_enrich.png' | relative_url }}"></a>
+</figure>
+
 We need enrich and join this information and send data to final stream **enrichflow**. In order to do this we have to define next EQL:
 
 ```sql
