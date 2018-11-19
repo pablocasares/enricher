@@ -29,7 +29,7 @@ import static io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper.BOOTST
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
 
-public class KafkaBootstraperGetConfigIntegrationTest {
+public class KafkaBootstrapperIntegrationTest {
     private final static int NUM_BROKERS = 1;
 
     @ClassRule
@@ -47,7 +47,6 @@ public class KafkaBootstraperGetConfigIntegrationTest {
     private static Properties producerConfig = new Properties();
 
     private static Properties consumerConfig = new Properties();
-
     @BeforeClass
     public static void startKafkaCluster() throws Exception {
         CLUSTER.createTopic(INPUT_STREAM_TOPIC, 2, REPLICATION_FACTOR);
@@ -73,9 +72,9 @@ public class KafkaBootstraperGetConfigIntegrationTest {
     }
 
     @Test
-    public void kafkaBootstraperGetConfigAndShouldWork() throws Exception {
+    public void kafkaBootstrapperShouldWork() throws Exception {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        File file = new File(classLoader.getResource("kafka-bootstraper-integration-test-1.json").getFile());
+        File file = new File(classLoader.getResource("kafka-bootstrapper-integration-test-1.json").getFile());
 
         Map<String, Object> streamsConfiguration = new HashMap<>();
 
@@ -88,7 +87,7 @@ public class KafkaBootstraperGetConfigIntegrationTest {
         streamsConfiguration.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1);
 
         Config configuration = new Config(streamsConfiguration);
-        configuration.put(ConfigProperties.BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
+        configuration.put(ConfigProperties.BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
         configuration.put(BOOTSTRAP_TOPICS_CONFIG, Arrays.asList(BOOTSTRAP_TOPIC));
 
         String jsonConfig = getFileContent(file);
@@ -148,7 +147,6 @@ public class KafkaBootstraperGetConfigIntegrationTest {
         builder.close();
     }
 
-
     public static String getFileContent(File file) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
@@ -163,6 +161,5 @@ public class KafkaBootstraperGetConfigIntegrationTest {
 
         return stringBuffer.toString();
     }
-
 
 }

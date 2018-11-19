@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPER_CLASSNAME;
+import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPPER_CLASSNAME;
 import static org.apache.kafka.streams.StreamsConfig.*;
 
 
@@ -56,7 +56,7 @@ public class Builder implements Listener {
         streamBuilder = new StreamBuilder(config.clone(), metricsManager);
 
         bootstrapper = BootstrapperBuilder.makeBuilder()
-                .boostrapperClass(config.get(BOOTSTRAPER_CLASSNAME))
+                .boostrapperClass(config.get(BOOTSTRAPPER_CLASSNAME))
                 .listener(this)
                 .withConfigInstance(config)
                 .build();

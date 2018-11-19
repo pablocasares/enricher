@@ -23,7 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPER_CLASSNAME;
+import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPPER_CLASSNAME;
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
 
@@ -85,8 +85,8 @@ public class MultiplesStreamsIntegrationTest {
         consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         Config configuration = new Config(streamsConfiguration);
-        configuration.put("file.bootstraper.path", Thread.currentThread().getContextClassLoader().getResource("multiples-streams-integration-test.json").getFile());
-        configuration.put(BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
+        configuration.put("file.bootstrapper.path", Thread.currentThread().getContextClassLoader().getResource("multiples-streams-integration-test.json").getFile());
+        configuration.put(BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
 
         Builder builder = new Builder(configuration);
 

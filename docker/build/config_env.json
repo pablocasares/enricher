@@ -2,7 +2,7 @@
   "application.id": "${APPLICATION_ID}",
   "bootstrap.servers": "${KAFKA_BOOTSTRAP_SERVER}",
   "num.stream.threads": ${NUM_STREAM_THREADS},
-  "bootstraper.classname": "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper",
+  "bootstrapper.classname": "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper",
   "metric.enable": ${METRIC_ENABLE},
   "metric.kafka.topic": "${METRIC_KAFKA_TOPIC}",
   "metric.listeners": ["io.wizzie.metrics.listeners.KafkaMetricListener"],

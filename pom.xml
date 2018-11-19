@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <config-bootstrapper.version>0.0.8</config-bootstrapper.version>
+        <config-bootstrapper.version>0.0.9</config-bootstrapper.version>
         <kafka.version>1.1.0</kafka.version>
         <slf4j-api.version>1.8.0-alpha2</slf4j-api.version>
         <dropwizard.version>4.0.3</dropwizard.version>

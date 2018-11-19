@@ -71,7 +71,7 @@ public class StreamerKafkaConfig {
             consumerConfig.put(KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
             consumerConfig.put(VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
             consumerConfig.put(GROUP_ID_CONFIG, String.format(
-                    "enricher-bootstraper-%s-%s", args[1], UUID.randomUUID().toString())
+                    "enricher-bootstrapper-%s-%s", args[1], UUID.randomUUID().toString())
             );
 
             KafkaConsumer<String, String> restoreConsumer = new KafkaConsumer<>(consumerConfig);

@@ -4,7 +4,7 @@ title: Multi Tenant
 toc: false
 ---
 
-The Enricher service has a multi tenant mode, in this mode it prefixs the `application.id` automatically in all the Kafka topics, except the bootstraper and metric topic.
+The Enricher service has a multi tenant mode, in this mode it prefixs the `application.id` automatically in all the Kafka topics, except the bootstrapper and metric topic.
 
 On this mode when you define a stream definition, for example:
 

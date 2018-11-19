@@ -77,8 +77,8 @@ public class QueryGlobalTableIntegrationTest {
         consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         Config configuration = new Config(streamsConfiguration);
-        configuration.put("file.bootstraper.path", Thread.currentThread().getContextClassLoader().getResource("query-with-global-table-integration-test.json").getFile());
-        configuration.put(ConfigProperties.BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
+        configuration.put("file.bootstrapper.path", Thread.currentThread().getContextClassLoader().getResource("query-with-global-table-integration-test.json").getFile());
+        configuration.put(ConfigProperties.BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
 
         Builder builder = new Builder(configuration);
 

@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPER_CLASSNAME;
+import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPPER_CLASSNAME;
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -94,8 +94,8 @@ public class NullKeyJoinIntegrationTest {
         Config configuration = new Config(streamsConfiguration);
         configuration.put(ConfigProperties.MULTI_ID, true);
         configuration.put(ConfigProperties.BYPASS_NULL_KEYS, true);
-        configuration.put("file.bootstraper.path", Thread.currentThread().getContextClassLoader().getResource("null-key-join-integration-test.json").getFile());
-        configuration.put(BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
+        configuration.put("file.bootstrapper.path", Thread.currentThread().getContextClassLoader().getResource("null-key-join-integration-test.json").getFile());
+        configuration.put(BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
 
         Builder builder = new Builder(configuration);
 
@@ -164,8 +164,8 @@ public class NullKeyJoinIntegrationTest {
         Config configuration = new Config(streamsConfiguration);
         configuration.put(ConfigProperties.MULTI_ID, true);
         configuration.put(ConfigProperties.BYPASS_NULL_KEYS, true);
-        configuration.put("file.bootstraper.path", Thread.currentThread().getContextClassLoader().getResource("null-key-join-integration-test.json").getFile());
-        configuration.put(BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
+        configuration.put("file.bootstrapper.path", Thread.currentThread().getContextClassLoader().getResource("null-key-join-integration-test.json").getFile());
+        configuration.put(BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
 
         Builder builder = new Builder(configuration);
 
