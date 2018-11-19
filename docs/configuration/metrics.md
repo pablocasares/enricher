@@ -4,7 +4,7 @@ layout: single
 toc: true
 ---
 
-The Enricher service uses the [Wizzie Metrics Library](https://github.com/wizzie-io/metrics-library) to build his metrics, by default it sends JVM metrics but you can register new metrics that will be exported too.
+The Enricher service uses the [Wizzie Metrics Library](https://github.com/wizzie-io/metrics-library) to build its metrics. By default it sends JVM metrics but you can register new metrics which will be exported too.
 
 ## Properties
 
@@ -23,7 +23,7 @@ The listeners are the process that listen the reported metrics and do something 
 
 ### ConsoleMetricListener
 
-This listener `io.wizzie.metrics.listeners.ConsoleMetricListener` send the transform the metrics to JSON and prints them into the log file using the log4j. The metric format is:
+This listener `io.wizzie.metrics.listeners.ConsoleMetricListener` sends the enricher metrics in JSON format and prints them into the log file using the log4j. The metric format is:
 
 ```json
 {"timestamp":123456789, "monitor":"heap-memory", "value":12345}
@@ -31,7 +31,7 @@ This listener `io.wizzie.metrics.listeners.ConsoleMetricListener` send the trans
 
 ### KafkaMetricListener
 
-This listener `io.wizzie.metrics.listeners.KafkaMetricListener` send the transform the metrics to JSON and sends them into the Kafka topic. The metric format is:
+This listener `io.wizzie.metrics.listeners.KafkaMetricListener` sends the enricher metrics in JSON format to the metrics Kafka topic. The metric format is:
 
 ```json
 {"timestamp":123456789, "monitor":"heap-memory", "value":12345, "app_id":"MY_KAFKA_STREAMS_APP_ID"}
@@ -40,4 +40,4 @@ This listener `io.wizzie.metrics.listeners.KafkaMetricListener` send the transfo
 This listener adds a new property to specify the metrics Kafka topic `metric.kafka.topic`, by default is `__enricher_metrics`
 
 ### Custom Listeners
-You can made new listeners to do this you need to implement the [MetricListener Class](https://github.com/wizzie-io/metrics-library/blob/master/src/main/java/io/wizzie/metrics/listeners/MetricListener.java).
+You can made new listeners. To do this you need to implement the [MetricListener Class](https://github.com/wizzie-io/metrics-library/blob/master/src/main/java/io/wizzie/metrics/listeners/MetricListener.java).

@@ -50,7 +50,7 @@ The `[PARTITION] BY` clause allows us partition by field instead of stream's key
 
 ### Enrichers
 
-An enricher add relational information about events.
+An enricher adds relational information about events.
 
 Enricher basic syntax is as follows:
 
@@ -64,7 +64,7 @@ An enricher can be any data source that works with Json messages.
 
 ### Output Stream
 
-The `INSERT INTO` clause allows us to define what stream to use as the output stream, this clause can be complemented with `PARTITION BY` clause that allows us repartition the output stream by a specific field. If we omit the `PARTITION BY` clause, the enricher will use the current partition key of the input stream.
+The `INSERT INTO` clause allows us to define which stream to use as the output stream, this clause can be complemented with `PARTITION BY` clause that allows us repartition the output stream by a specific field. If we omit the `PARTITION BY` clause, the enricher will use the current partition key of the input stream.
 
 ## Examples
 

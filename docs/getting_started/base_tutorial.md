@@ -4,10 +4,10 @@ layout: single
 toc: true
 ---
 
-On this page, we can to try an enrichment stream example using a real Kafka cluster and the enricher jar artifact. We are going to suppose that you have built the enricher distribution how we explain on the [Building](https://github.com/wizzie-io/enricher#compiling-sources) section or you are using [enricher docker](https://hub.docker.com/r/wizzieio/enricher/).
+On this page, we can try an enrichment stream example using a real Kafka cluster and the enricher jar artifact. We are going to suppose that you have built the enricher distribution how we explain on the [Building](https://github.com/wizzie-io/enricher#compiling-sources) section or you are using [enricher docker](https://hub.docker.com/r/wizzieio/enricher/).
 
 ### Explication
-First of all, we need define an enrichment stream for launch an enrich application.
+First of all, we need to define an enrichment stream for launch an enrich application.
 
 #### Enrichment Stream Config Json (my-enrichment-stream-tutorial.json)
 
@@ -65,7 +65,7 @@ As you can see we have two key-value messages with key `b64042f926eb`. On this e
 }
 ```
 
-Finally the result will be send to Kafka again into a topic that is called `output`.
+Finally the result will be sent to Kafka again into a topic that is called `output`.
 
 ### Execution
 On the first time we need to have a running Kafka cluster and the decompressed enricher distribution.
@@ -88,7 +88,7 @@ We need to modify the config file that is inside the folder `config/sample_confi
 
 On this config file we indicate the `application.id` that will identify our instances group and the running Zookeeper and some Kafka Broker. On the example we are going to use the `FileBootstraper` so we read the config using a local file. We also need to set the property `file.bootstraper.path` to the path where we have the enrichment config file.
 
-Now we can start the enricher service to do that we can uses the init script that is inside the folder bin:
+Now we can start the enricher service. We can uses the init script that is inside the folder bin:
 
 ```bash
 enricher/bin/enricher-start.sh enricher/config/sample_config.json
@@ -108,7 +108,7 @@ When the enricher is running you can check it on the log file that is on directo
 
 The "*Topic creation*" messages indicates that one or more Kafka topics does not exist and has been created.
 
-Now you can produce some input message first into `metrics` Kafka topic and then into `alarms`, but first you could open a Kafka consumer to check the output messages.
+Now you can produce some input messages first into `metrics` Kafka topic and then into `alarms`, but first you could open a Kafka consumer to check the output messages.
 
 Consumer from `output`
 
@@ -143,7 +143,7 @@ b64042f926eb, {"timestamp": 1487869303, "type": "alarm", "level": "several"}
 and you must see the output message on the console-consumer:
 
 ```bash
-b64042f926eb	{"name":"cpu","value":90,"level":"several","timestamp":1487869303}
+b64042f926eb, {"name":"cpu","value":90,"level":"several","timestamp":1487869303}
 ```
 
 You have finished the base tutorial, congratulations!

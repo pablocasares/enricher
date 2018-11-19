@@ -18,11 +18,11 @@ Image above represents the base enrich behaviour:
 2. Enricher enrich the received message with a external data store system.
 3. Enricher sends the enrich message to `output` topic.
 
-**It important to emphasise that a message doesn't need to have a key like the joiners.**
+**It is important to emphasise that a message doesn't need to have a key like the joiners.**
 {: .notice--info}
 
 ### GeoIpEnrich
-The GeoIpEnrich allow us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
+The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
 
 ```json
 {
@@ -56,7 +56,7 @@ On this enricher you have next properties:
 * `city6.db.path`: Path to IPv6 city database.
 * `city.db.path`: Path to IPv4 city database.
 
-This enricher process a message and return both source and destiny IP location. Not all IP are localizable.
+This enricher processes a message and returns both source and destiny IP location. Not all IP are localizable.
 
 **Input:**
 
@@ -71,7 +71,7 @@ This enricher process a message and return both source and destiny IP location. 
 ```
 
 ### MacVendorEnrich
-The MacVendorEnrich allow us enrich streams with information about Mac vendors internally the enricher uses database in order to determine the mac vendor.
+The MacVendorEnrich allows us enrich streams with information about Mac vendors internally the enricher uses database in order to determine the mac vendor.
 
 ```json
 {
@@ -91,7 +91,7 @@ On this enricher you have next properties:
 * `mac.dim`: The dimension that contains mac address.
 * `mac.vendor.dim`: The target dimension for vendor's name about mac address.
 
-This enricher process a message and return the mac vendor field. Not all mac address have mac vendor.
+This enricher processes a message and returns the mac vendor field. Not all mac address have a mac vendor.
 
 **Input:**
 ```json
