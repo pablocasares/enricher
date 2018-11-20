@@ -15,7 +15,7 @@ The base joiners join both two streams of JSON objects.
 
 ### StreamPreferredJoiner
 
-The StreamPreferredJoiner is a joiner that allow us join both two streams of JSON objects, favoring the stream's fields.
+The StreamPreferredJoiner is a joiner that allows us join both two streams of JSON objects, favoring the stream's fields.
 
 <figure>
     <a href="{{ '/assets/images/stream_preferred_joiner.png' | relative_url }}"><img src="{{ '/assets/images/stream_preferred_joiner.png' | relative_url }}"></a>
@@ -23,7 +23,7 @@ The StreamPreferredJoiner is a joiner that allow us join both two streams of JSO
 
 ### TablePreferredJoiner
 
-The TablePreferredJoiner is a joiner that allow us join both two streams of JSON objects, favoring the table's fields.
+The TablePreferredJoiner is a joiner that allows us join both two streams of JSON objects, favoring the table's fields.
 
 <figure>
     <a href="{{ '/assets/images/table_preferred_joiner.png' | relative_url }}"><img src="{{ '/assets/images/table_preferred_joiner.png' | relative_url }}"></a>
@@ -31,7 +31,7 @@ The TablePreferredJoiner is a joiner that allow us join both two streams of JSON
 
 ## Queryable Joiner
 
-The queryable joiner works like base joiner. The difference is that a queryable joiner will notify to `__enricher_queryable` topic, if received message cannot be join it with other message with same key. We can see two cases:
+The queryable joiner works like base joiner. The difference is that a queryable joiner will notify to `__enricher_queryable` topic, if received message cannot be join with other message with same key. We can see two cases:
 
 * CASE 1: Received message cannot be joined with other with same key.
 
@@ -41,7 +41,7 @@ The queryable joiner works like base joiner. The difference is that a queryable 
 </figure>
 
  1. Enricher receives a message from `stream` topic.
- 2. As there is not any message from `table` topic, so enricher sends next notification to `__enricher_queryable`:
+ 2. As there is no any message from `table` topic, so enricher sends next notification to `__enricher_queryable`:
   ```json
      (
        KEY-A,
@@ -53,7 +53,7 @@ The queryable joiner works like base joiner. The difference is that a queryable 
        }
      )
   ```
- 3. The Unjoined message is sends to `output` topic.
+ 3. The Unjoined message is sent to `output` topic.
 
 * CASE 2: Received message can be joined with other with same key.
 
@@ -63,9 +63,9 @@ The queryable joiner works like base joiner. The difference is that a queryable 
 
  1. A message is received in `table` topic.
  2. Enricher receives a message from `stream` topic with same key that message received in `table` topic.
- 3. Enricher joins the messages with same key and sends it to `output` topic:
+ 3. Enricher joins the messages with same key and sends them to `output` topic:
 
-Just the base joiner, queryable joiner have next functions:
+Just the base joiner, queryable joiner has next functions:
 
 |Function|Description|
 |--------|-----------|
@@ -74,7 +74,7 @@ Just the base joiner, queryable joiner have next functions:
 
 ## Queryableback Joiner
 
-The queryableback joiner work like base joiner. The difference is that a queryableback joiner will notify to `__enricher_queryable` and will resend message to stream, if received message cannot be join it with other message with same key.
+The queryableback joiner works like base joiner. The difference is that a queryableback joiner will notify to `__enricher_queryable` and will resend message to stream, if received message cannot be join with other message with same key.
 
 <figure>
     <a href="{{ '/assets/images/queryableback_preferred_concept.png' | relative_url }}"><img src="{{ '/assets/images/queryableback_preferred_concept.png' | relative_url }}"></a>
@@ -103,7 +103,7 @@ Image above represents the queryableback join behaviour:
 **Caution** Steps 2 and 3 is a loop, if message isn't joined then they will be resend forever.
 {: .notice--danger}
 
-Just as base joiner, queryableback joiner have next functions:
+Just as base joiner, queryableback joiner has next functions:
 
 |Function|Description|
 |--------|-----------|

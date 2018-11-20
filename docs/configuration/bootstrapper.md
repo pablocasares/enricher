@@ -4,7 +4,7 @@ layout: single
 toc: true
 ---
 
-The bootstrapper is the mechanism used to load the configuration of the sequence in an enricher. You can configure the boostrapper class on the config file, using `bootstrapper.classname` property. Currently, the enricher has two bootstrappers:
+The bootstrapper is the mechanism that is used to load stream config into enricher. You can configure the boostrapper class on the config file, using `bootstrapper.classname` property. Currently, the enricher has two bootstrappers:
 
 * [FileBootstrapper](https://wizzie-io.github.io/enricher/configuration/bootstrapper.html#filebootstrapper)
 * [KafkaBootstrapper](https://wizzie-io.github.io/enricher/configuration/bootstrapper.html#kafkabootstrapper)
@@ -15,7 +15,7 @@ The bootstrapper is the mechanism used to load the configuration of the sequence
 
 `io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper`
 
-This bootstrapper reads the stream config from Kafka, so you can change the stream topology without restarting the service. The bootstrapper is reading the topic `__enricher_bootstrap` using a kafka consumer instance with a random `group.id`.
+This bootstrapper read the stream config from Kafka, so you can change the stream topology without restart the service. The bootstrapper is reading the topic `__enricher_bootstrap` using a kafka consumer instance with a random `group.id`.
 
 | Property     | Description     |
 | :------------- | :-------------  |
@@ -49,7 +49,7 @@ bin/streamer-kafka.sh $BOOTSTRAP_KAFKA_SERVER $APPLICATION_ID $STREAM_CONFIG_FIL
 
 `io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper`
 
-This bootstrapper reads the stream config from local file system, and builds a KS topology using this file. You need to add the properties on the configuration file.
+This bootstrapper read the stream config from local file system, and build a KS topology using this file. You need to add the properties on the configuration file.
 
 | Property     | Description     |
 | :------------- | :-------------  |

@@ -4,7 +4,7 @@ layout: single
 toc: false
 ---
 
-The configuration file is a JSON format file where you specify the general properties to configure the enricher instance. This file is different from stream config file which define the KS topology.
+The configuration file is a JSON format file where you specify the general properties to configure the enricher instance. This file is different from stream config file that define the KS topology.
 
 Example configuration file:
 

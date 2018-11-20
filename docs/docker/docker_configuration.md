@@ -19,19 +19,20 @@ Enricher requires a running Kafka broker before it starts.
 
 First, start a zookeeper container by executing:
 
-```
+```bash
 $ docker run --rm --name zookeeper-svc --net=host wurstmeister/zookeeper
 ```
 
-You can found more information about `wurstmeister/zookeeper` image [here](https://hub.docker.com/r/wurstmeister/zookeeper)
+You can find more information about `wurstmeister/zookeeper` image [here](https://hub.docker.com/r/wurstmeister/zookeeper)
 
 ##### Kafka
 Now, start a kafka broker container by executing:
 
-```
+```bash
 $ docker run --rm --name kafka-broker --net=host -e KAFKA_ADVERTISED_HOST_NAME=localhost -e KAFKA_ZOOKEEPER_CONNECT=localhost:2181 -e KAFKA_ADVERTISED_PORT=9092 wurstmeister/kafka:0.10.2.1
 ```
-You can found more information about `wurstmeister/kafka` image [here](https://hub.docker.com/r/wurstmeister/kafka)
+
+You can find more information about `wurstmeister/kafka` image [here](https://hub.docker.com/r/wurstmeister/kafka)
 
 ##### Start Enricher
 
