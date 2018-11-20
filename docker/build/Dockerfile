@@ -24,6 +24,7 @@ ENV MAX_OUTPUT_KAFKA_TOPICS 500
 ENV METRIC_KAFKA_TOPIC __metrics
 ENV GLOBAL_TOPICS []
 ENV BYPASS_NULL_KEYS true
+ENV BOOTSTRAP_CLASSNAME io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper
 ENV BOOTSTRAP_KAFKA_TOPICS [\"__enricher_bootstrap\"]
 
 ENV LOG_LEVEL info
