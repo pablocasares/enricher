@@ -1,0 +1,44 @@
+{
+  "enrichers":[
+    {
+      "name": "staticDataEnrich",
+      "className": "io.wizzie.enricher.enrichment.simple.impl.StaticDataEnrich",
+      "properties": {
+        "dimension-1": [
+          {
+            "ifValueIsEqualTo": true,
+            "enrichWith": {"response": "YES"}
+          },
+          {
+            "ifValueIsEqualTo": false,
+            "enrichWith": {"response": "NO"}
+          }
+        ],
+        "dimension-2": [
+          {
+            "ifValueIsEqualTo": "one",
+            "enrichWith": {"digit": 1}
+          },
+          {
+            "ifValueIsEqualTo": "two",
+            "enrichWith": {"digit": 2}
+          }
+        ],
+        "dimension-3": [
+          {},
+          {
+            "ifValueIsEqualTo": "test"
+          },
+          {
+            "enrichWith": {}
+          }
+        ]
+      }
+    }
+  ],
+  "queries": {
+    "query1": "SELECT * FROM STREAM input1 ENRICH WITH staticDataEnrich INSERT INTO TABLE output",
+    "query2": "SELECT * FROM STREAM input2 ENRICH WITH staticDataEnrich INSERT INTO TABLE output",
+    "query3": "SELECT * FROM STREAM input3 ENRICH WITH staticDataEnrich INSERT INTO TABLE output"
+  }
+}

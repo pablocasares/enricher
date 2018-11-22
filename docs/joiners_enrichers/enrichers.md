@@ -21,8 +21,59 @@ Image above represents the base enrich behaviour:
 **It important to emphasise that a message doesn't need to have a key like the joiners.**
 {: .notice--info}
 
+### StaticDataEnrich
+The StaticDataEnrich allows us to enrich streams with the static information given by us. You can define the data in the property section:
+
+```json
+{
+  "name": "staticDataEnrich",
+  "className": "io.wizzie.enricher.enrichment.simple.impl.StaticDataEnrich",
+  "properties": {
+    "DIMENSION-A": [
+        {
+           "ifValueIsEqualTo": "VALUE-A",
+           "enrichWith": {"field1": "value1"}
+        },
+        {
+            "ifValueIsEqualTo": "VALUE-B",
+            "enrichWith": {"field2": true, "field3": 17}
+        }
+    ],
+    "DIMENSION-B": [
+        {
+            "ifValueIsEqualTo": "VALUE-C",
+            "enrichWith": {"field4": 1.23}
+        }
+    ]
+  }
+}
+```
+
+On this enricher you have the next properties:
+
+* `ifValueIsEqualTo`: Check if value of specified dimension is equal to provide value.
+* `enrichWith`: The dimension that contains the json map to enrich.
+
+This enricher processes a message and returns the defined static fields.
+
+**Input:**
+```json
+{"DIMENSION-A": "VALUE-A"}
+{"DIMENSION-A": "VALUE-B"}
+{"DIMENSION-B": "VALUE-C"}
+```
+
+**Output:**
+
+```json
+{"DIMENSION-A": "VALUE-B", "field1": "value1"}
+{"DIMENSION-A": "VALUE-B", "field2": true, "field3": 17}
+{"DIMENSION-A": "VALUE-B", "field4": 1.23}
+
+```
+
 ### GeoIpEnrich
-The GeoIpEnrich allow us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
+The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
 
 ```json
 {
@@ -43,7 +94,7 @@ The GeoIpEnrich allow us enrich streams with information about IP location, inte
 }
 ```
 
-On this enricher you have next properties:
+On this enricher you have the next properties:
 
 * `src.dim`: The dimension that contains source IP.
 * `dst.dim`: The dimension that contains destiny IP.
@@ -56,7 +107,7 @@ On this enricher you have next properties:
 * `city6.db.path`: Path to IPv6 city database.
 * `city.db.path`: Path to IPv4 city database.
 
-This enricher process a message and return both source and destiny IP location. Not all IP are localizable.
+This enricher processes a message and returns both source and destiny IP location. Not all IP are localizable.
 
 **Input:**
 
@@ -71,7 +122,7 @@ This enricher process a message and return both source and destiny IP location. 
 ```
 
 ### MacVendorEnrich
-The MacVendorEnrich allow us enrich streams with information about Mac vendors internally the enricher uses database in order to determine the mac vendor.
+The MacVendorEnrich allows us enrich streams with information about Mac vendors internally the enricher uses database in order to determine the mac vendor.
 
 ```json
 {
@@ -85,13 +136,13 @@ The MacVendorEnrich allow us enrich streams with information about Mac vendors i
 }
 ```
 
-On this enricher you have next properties:
+On this enricher you have the next properties:
 
 * `oui.file.path`: Path to mac vendors database file.
 * `mac.dim`: The dimension that contains mac address.
 * `mac.vendor.dim`: The target dimension for vendor's name about mac address.
 
-This enricher process a message and return the mac vendor field. Not all mac address have mac vendor.
+This enricher processes a message and returns the mac vendor field. Not all mac address have mac vendor.
 
 **Input:**
 ```json
