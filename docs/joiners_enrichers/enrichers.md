@@ -73,7 +73,7 @@ This enricher processes a message and returns the defined static fields.
 ```
 
 ### GeoIpEnrich
-The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses database in order to determine the IP location.
+The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses MaxMind [databases](https://dev.maxmind.com/geoip/geoip2/downloadable/) in order to determine the IP information.
 
 ```json
 {
@@ -96,29 +96,129 @@ The GeoIpEnrich allows us enrich streams with information about IP location, int
 
 On this enricher you have the next properties:
 
-* `src.dim`: The dimension that contains source IP.
-* `dst.dim`: The dimension that contains destiny IP.
-* `src.country.code.dim`: The target dimension for country code information about source IP.
-* `dst.country.code.dim`: The target dimension for country code information about destiny IP.
-* `src.as.name.dim`: The target dimension for name information about source IP.
-* `dst.as.name.dim`: The target dimension for name information about destiny IP.
-* `asn6.db.path`: Path to IPv6 ASN database.
-* `asn.db.path`: Path to IPv4 ASN database.
-* `city6.db.path`: Path to IPv6 city database.
-* `city.db.path`: Path to IPv4 city database.
+**Dimensions**: You can set the dimensions' name with the next properties.
 
-This enricher processes a message and returns both source and destiny IP location. Not all IP are localizable.
+| Property    | Description     |  Default Value|
+|:-------------:|:-----------------------------:|:-------------:|
+| `src.dim`             | The dimension that contains source IP |  `src` |
+| `dst.dim`             | The dimension that contains destiny IP | `dst` |
+|`src.as.name.dim` | The target dimension for name information about source IP| `src_as_name`|
+|`dst.as.name.dim`| The target dimension for name information about destiny IP| `dst_as_name`|
+| `src.country.code.dim`| The target dimension for country code information about source IP | `src_country_code`|
+| `dst.country.code.dim`| The target dimension for country code information about destiny IP | `dst_country_code`|
+| `src.country.iso.code.dim`| The target dimension for country iso code information about source IP | `src_country_iso_code`|
+| `dst.country.iso.code.dim`| The target dimension for country iso code information about destiny IP | `dst_country_iso_code`|
+| `src.country.is .in.european.union.dim`| The target dimension for country is in european union information about source IP | `src_country_is_in_european_union`|
+| `dst.country.is .in.european.union.dim`| The target dimension for country is in european union information about destiny IP | `dst_country_is_in_european_union`|
+|`src.country.name.dim`| The target dimension for country name information about source IP| `src_country_name`|
+|`dst.country.name.dim`| The target dimension for country name information about destiny IP| `dst_country_name`|
+|`src.continent.name.dim`| The target dimension for continent name information about source IP| `src_continent_name`|
+|`dst.continent.name.dim`| The target dimension for continent name information about destiny IP| `dst_continent_name`|
+|`src.continent.code.dim`| The target dimension for continent code information about source IP| `src_continent_code`|
+|`dst.continent.code.dim`| The target dimension for continent code information about destiny IP| `dst_continent_code`|
+|`src.city.name.dim`| The target dimension for city information about source IP| `src_city_name`|
+|`dst.city.name.dim`| The target dimension for city information about destiny IP| `dst_city_name`|
+|`src.postal.code.dim`| The target dimension for postal code information about source IP| `src_postal_code`|
+|`dst.postal.code.dim`| The target dimension for postal code information about destiny IP| `dst_postal_code`|
+|`src.latitude.dim`| The target dimension for latitude information about source IP| `src_latitude`|
+|`dst.latitude.dim`| The target dimension for latitude information about destiny IP| `dst_latitude`|
+|`src.longitude.dim`| The target dimension for longitude information about source IP| `src_longitude`|
+|`dst.longitude.dim`| The target dimension for longitude information about destiny IP| `dst_longitude`|
+|`src.is.anonymous.dim`| The target dimension for is anonymous information about source IP| `src_is_anonymous`|
+|`dst.is.anonymous.dim`| The target dimension for is anonymous information about destiny IP| `dst_is_anonymous`|
+|`src.is.anonymous.vpn.dim`| The target dimension for is anonymous vpn information about source IP| `src_is_anonymous_vpn`|
+|`dst.is.anonymous.vpn.dim`| The target dimension for is anonymous vpn information about destiny IP| `dst_is_anonymous_vpn`|
+|`src.is.hosting.provider.dim`| The target dimension for is hosting provider information about source IP| `src_is_hosting_provider`|
+|`dst.is.hosting.provider.dim`| The target dimension for is hosting provider information about destiny IP| `dst_is_hosting_provider`|
+|`src.is.tor.exit.node.dim`| The target dimension for is tor exit node information about source IP| `src_is_tor_exit_node`|
+|`dst.is.tor.exit.node.dim`| The target dimension for is tor exit node information about destiny IP| `dst_is_tor_exit_node`|
+|`src.is.public.proxy.dim`| The target dimension for is public proxy information about source IP| `src_is_public_proxy`|
+|`dst.is.public.proxy.dim`| The target dimension for is public proxy information about destiny IP| `dst_is_public_proxy`|
+|`src.is.legitimate.proxy.dim`| The target dimension for is legitimate proxy information about source IP| `src_is_legitimate_proxy`|
+|`dst.is.legitimate.proxy.dim`| The target dimension for is legitimate proxy information about destiny IP| `dst_is_legitimate_proxy`|
+|`src.timezone.dim`| The target dimension for timezone information about source IP| `src_timezone`|
+|`dst.timezone.dim`| The target dimension for timezone information about destiny IP| `dst_timezone`|
+
+
+**Databases**: You can define the path of databases using the next properties:
+
+| Property    | Description     |  Default Value|
+|:-------------:|:-----------------------------:|:-------------:|
+|`asn.db.path`|Path to ASN database|/opt/share/GeoIP2/GeoLite2-ASN.mmdb|
+|`city.db.path`|Path to city database|/opt/share/GeoIP2/GeoLite2-City.mmdb|
+
+**Other properties**: You can use the next properties:
+
+| Property    | Description     |  Default Value|
+|:-------------:|:-----------------------------:|:-------------:|
+|`enable.data.verbose.mode`|Allow you get additional information if it's enable|false|
+
+
 
 **Input:**
 
 ```json
-{"src": "8.8.8.8", "dst": "8.8.8.8"}
+{"src": "8.8.8.8", "dst": "8.8.4.4"}
 ```
 
 ***Output:***
 
 ```json
-{"src": "8.8.8.8", "dst": "8.8.8.8", "dst_country_code":"US", "src_as_name":"Google Inc.", "dst_as_name":"Google Inc.", "src_country_code":"US"}
+{
+    "src": "8.8.8.8",
+    "dst": "8.8.8.8",
+    "dst_country_code": "US",
+    "src_country_code": "US",
+    "src_as_name": "Google LLC",
+    "dst_as_name": "Google LLC",
+    "src_longitude": -97.822,
+    "src_latitude": 37.751,
+    "dst_longitude": -97.822,
+    "dst_latitude": 37.751
+}
+```
+
+With `enable.data.verbose.mode` property to `true` you will get:
+
+**Input:**
+
+```json
+{"src": "2001:4860:4860::8888", "dst": "2001:4860:4860::8844"}
+```
+
+***Output:***
+
+```json
+{
+    "src": "2001:4860:4860::8888",
+    "dst": "2001:4860:4860::8844",
+    "dst_country_code": "US",
+    "src_country_code": "US",
+    "src_as_name": "Google LLC",
+    "dst_as_name": "Google LLC",
+    "src_longitude": -97.822,
+    "src_latitude": 37.751,
+    "dst_longitude": -97.822,
+    "dst_latitude": 37.751,
+    "src_country_name": "United States",
+    "dst_country_name": "United States",
+    "src_continent_name": "North America",
+    "dst_continent_name": "North America",
+    "src_continent_code": "NA",
+    "dst_continent_code": "NA",
+    "src_is_anonymous": false,
+    "dst_is_anonymous": false,
+    "src_is_public_proxy": false,
+    "dst_is_public_proxy": false,
+    "src_is_legitimate_proxy": false,
+    "dst_is_legitimate_proxy": false,
+    "src_is_hosting_provider": false,
+    "dst_is_hosting_provider": false,
+    "src_is_tor_exit_node": false,
+    "dst_is_tor_exit_node": false,
+    "src_is_anonymous_vpn": false,
+    "dst_is_anonymous_vpn": false
+}
 ```
 
 ### MacVendorEnrich

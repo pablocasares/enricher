@@ -13,7 +13,7 @@ RUN rm -f /opt/enricher/config/*
 ADD log4j2_env.xml /opt/enricher/config/
 ADD config_env.json /opt/enricher/config/
 ADD enricher-start.sh /bin
-ADD *.dat /opt/enricher/data/
+ADD *.mmdb /opt/enricher/data/
 ADD mac_vendors /opt/enricher/data/
 
 ENV METRIC_ENABLE true
