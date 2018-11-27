@@ -114,8 +114,8 @@ public class GeoIpEnrich extends BaseEnrich {
         }
 
         // Get database paths
-        String ASN_DB_PATH = (String) properties.getOrDefault(Constants.ASN_DB_PATH, "/opt/share/GeoIP2/GeoLite2-ASN.mmdb");
-        String CITY_DB_PATH = (String) properties.getOrDefault(Constants.CITY_DB_PATH, "/opt/share/GeoIP2/GeoLite2-City.mmdb");
+        String ASN_DB_PATH = (String) properties.getOrDefault(Constants.ASN_DB_PATH, "/opt/enricher/data/GeoLite2-ASN.mmdb");
+        String CITY_DB_PATH = (String) properties.getOrDefault(Constants.CITY_DB_PATH, "/opt/enricher/data/GeoLite2-City.mmdb");
 
         // Get if verbose mode is enable
         isVerboseMode = (boolean) properties.getOrDefault(Constants.ENABLE_VERBOSE_MODE, false);

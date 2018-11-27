@@ -73,7 +73,7 @@ This enricher processes a message and returns the defined static fields.
 ```
 
 ### GeoIpEnrich
-The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses MaxMind [databases](https://dev.maxmind.com/geoip/geoip2/downloadable/) in order to determine the IP information.
+The GeoIpEnrich allows us enrich streams with information about IP location, internally the enricher uses MaxMind [databases](https://dev.maxmind.com/geoip/geoip2/geolite2/) in order to determine the IP information.
 
 ```json
 {
@@ -86,10 +86,8 @@ The GeoIpEnrich allows us enrich streams with information about IP location, int
     "dst.country.code.dim": "dst_country_code",
     "src.as.name.dim": "src_as_name",
     "dst.as.name.dim": "dst_as_name",
-    "asn6.db.path": "/opt/enricher/data/asnv6.dat",
-    "asn.db.path": "/opt/enricher/data/asn.dat",
-    "city6.db.path": "/opt/enricher/data/cityv6.dat",
-    "city.db.path": "/opt/enricher/data/city.dat"
+    "asn.db.path": "/opt/enricher/data/GeoLite2-ASN.mmdb",
+    "city.db.path": "/opt/enricher/data/GeoLite2-City.mmdb"
   }
 }
 ```
