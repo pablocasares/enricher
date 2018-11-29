@@ -11,10 +11,6 @@
 
     <artifactId>base</artifactId>
 
-    <properties>
-        <kafka.version>1.0.0</kafka.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.mockito</groupId>

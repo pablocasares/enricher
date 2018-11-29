@@ -55,10 +55,10 @@ public class KafkaBootstrapperChangeConfigIntegrationTest {
 
     @BeforeClass
     public static void startKafkaCluster() throws Exception {
-        CLUSTER.createTopic(INPUT_STREAM_TOPIC, 2, REPLICATION_FACTOR);
-        CLUSTER.createTopic(INPUT_TABLE_1_TOPIC, 2, REPLICATION_FACTOR);
-        CLUSTER.createTopic(INPUT_TABLE_2_TOPIC, 2, REPLICATION_FACTOR);
-        CLUSTER.createTopic(OUTPUT_TOPIC, 2, REPLICATION_FACTOR);
+        CLUSTER.createTopic(INPUT_STREAM_TOPIC, 1, REPLICATION_FACTOR);
+        CLUSTER.createTopic(INPUT_TABLE_1_TOPIC, 1, REPLICATION_FACTOR);
+        CLUSTER.createTopic(INPUT_TABLE_2_TOPIC, 1, REPLICATION_FACTOR);
+        CLUSTER.createTopic(OUTPUT_TOPIC, 1, REPLICATION_FACTOR);
 
         CLUSTER.createTopic(BOOTSTRAP_TOPIC, 1, REPLICATION_FACTOR);
 
@@ -129,10 +129,17 @@ public class KafkaBootstrapperChangeConfigIntegrationTest {
         KeyValue<String, Map<String, Object>> kvStream3 = new KeyValue<>("KEY_A", message3);
 
         producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+
+        List<KeyValue<String, Map>> checkReceived;
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_TABLE_1_TOPIC, Arrays.asList(kvStream2), producerConfig, CLUSTER.time);
+        checkReceived = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, INPUT_TABLE_1_TOPIC, 1);
+        assertEquals(kvStream2, checkReceived.get(0));
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_TABLE_2_TOPIC, Arrays.asList(kvStream3), producerConfig, CLUSTER.time);
+        checkReceived = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, INPUT_TABLE_2_TOPIC, 1);
+        assertEquals(kvStream3, checkReceived.get(0));
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_STREAM_TOPIC, Arrays.asList(kvStream1), producerConfig, CLUSTER.time);
 
@@ -143,8 +150,6 @@ public class KafkaBootstrapperChangeConfigIntegrationTest {
         expectedData1.put("d", 4);
 
         KeyValue<String, Map<String, Object>> expectedDataKv1 = new KeyValue<>("KEY_A", expectedData1);
-
-        consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         List<KeyValue<String, Map>> receivedMessagesFromOutput1 = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC, 1);
 
@@ -190,10 +195,15 @@ public class KafkaBootstrapperChangeConfigIntegrationTest {
         KeyValue<String, Map<String, Object>> kvStream6 = new KeyValue<>("KEY_A", message6);
 
         producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_TABLE_1_TOPIC, Arrays.asList(kvStream5), producerConfig, CLUSTER.time);
+        checkReceived = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, INPUT_TABLE_1_TOPIC, 1);
+        assertEquals(kvStream5, checkReceived.get(0));
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_TABLE_2_TOPIC, Arrays.asList(kvStream6), producerConfig, CLUSTER.time);
+        checkReceived = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, INPUT_TABLE_2_TOPIC, 1);
+        assertEquals(kvStream6, checkReceived.get(0));
 
         IntegrationTestUtils.produceKeyValuesSynchronously(INPUT_STREAM_TOPIC, Arrays.asList(kvStream4), producerConfig, CLUSTER.time);
 
@@ -204,10 +214,7 @@ public class KafkaBootstrapperChangeConfigIntegrationTest {
         expectedData2.put("w", 9);
         expectedData2.put("j", 5);
 
-
         KeyValue<String, Map<String, Object>> expectedDataKv2 = new KeyValue<>("KEY_A", expectedData2);
-
-        consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         List<KeyValue<String, Map>> receivedMessagesFromOutput2 = IntegrationTestUtils.waitUntilMinKeyValueRecordsReceived(consumerConfig, OUTPUT_TOPIC, 1);
 

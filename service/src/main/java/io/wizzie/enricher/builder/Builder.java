@@ -178,6 +178,8 @@ public class Builder implements Listener {
             properties.put(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
                     Integer.MAX_VALUE);
 
+            properties.put(TOPOLOGY_OPTIMIZATION, "all");
+
             log.info(builder.build().describe().toString());
 
             streams = new KafkaStreams(builder.build(), properties);
@@ -191,6 +193,8 @@ public class Builder implements Listener {
                 }
                 log.info("Closing enricher engine");
             });
+
+            streams.cleanUp();
             streams.start();
 
             registerKafkaMetrics(config, metricsManager);
