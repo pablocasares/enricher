@@ -19,19 +19,20 @@ Enricher requires a running Kafka broker before it starts.
 
 First, start a zookeeper container by executing:
 
-```
+```bash
 $ docker run --rm --name zookeeper-svc --net=host wurstmeister/zookeeper
 ```
 
-You can found more information about `wurstmeister/zookeeper` image [here](https://hub.docker.com/r/wurstmeister/zookeeper)
+You can find more information about `wurstmeister/zookeeper` image [here](https://hub.docker.com/r/wurstmeister/zookeeper)
 
 ##### Kafka
 Now, start a kafka broker container by executing:
 
-```
+```bash
 $ docker run --rm --name kafka-broker --net=host -e KAFKA_ADVERTISED_HOST_NAME=localhost -e KAFKA_ZOOKEEPER_CONNECT=localhost:2181 -e KAFKA_ADVERTISED_PORT=9092 wurstmeister/kafka:0.10.2.1
 ```
-You can found more information about `wurstmeister/kafka` image [here](https://hub.docker.com/r/wurstmeister/kafka)
+
+You can find more information about `wurstmeister/kafka` image [here](https://hub.docker.com/r/wurstmeister/kafka)
 
 ##### Start Enricher
 
@@ -40,7 +41,7 @@ Once kafka broker is up, we can start a Enricher container and link it to the ka
 ```
 $ docker run --rm --name my-enricher --net=host -e APPLICATION_ID=my-enricher-app -e KAFKA_BOOTSTRAP_SERVER=localhost:9092 wizzieio/enricher:latest
 ```
-Now you can follow the [base tutorial](http://www.wizzie-io.github.io/enricher/getting_started/base_tutorial) to test Enricher!
+Now you can follow the [base tutorial](https://wizzie-io.github.io/enricher/getting_started/base_tutorial) to test Enricher!
 
 ### Using environment variables in enricher configuration
 

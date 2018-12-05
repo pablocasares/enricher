@@ -2,7 +2,7 @@
   "application.id": "ks-enricher-app-id",
   "bootstrap.servers": "localhost:9092",
   "num.stream.threads": 1,
-  "bootstraper.classname": "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper",
+  "bootstrapper.classname": "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper",
   "metric.enable": true,
   "metric.listeners": ["io.wizzie.metrics.listeners.ConsoleMetricListener"],
   "metric.interval": 60000,

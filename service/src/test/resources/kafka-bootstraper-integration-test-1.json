@@ -1,8 +1,0 @@
-{
-  "joiners":[
-    {"name":"streamPreferred", "className":"io.wizzie.enricher.enrichment.join.impl.StreamPreferredJoiner"}
-  ],
-  "queries": {
-    "query1": "SELECT * FROM STREAM stream1 JOIN SELECT * FROM TABLE table1 USING streamPreferred JOIN SELECT * FROM TABLE table2 USING streamPreferred INSERT INTO TABLE output"
-  }
-}

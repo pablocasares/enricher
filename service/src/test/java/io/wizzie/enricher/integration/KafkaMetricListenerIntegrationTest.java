@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPER_CLASSNAME;
+import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPPER_CLASSNAME;
 import static org.junit.Assert.assertTrue;
 
 public class KafkaMetricListenerIntegrationTest {
@@ -57,8 +57,8 @@ public class KafkaMetricListenerIntegrationTest {
         config.put("metric.listeners", Collections.singletonList("io.wizzie.metrics.listeners.KafkaMetricListener"));
         config.put("metric.enable", true);
         config.put("metric.kafka.topic", INPUT_TOPIC);
-        config.put("file.bootstraper.path", Thread.currentThread().getContextClassLoader().getResource("dummy-stream.json").getFile());
-        config.put(BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
+        config.put("file.bootstrapper.path", Thread.currentThread().getContextClassLoader().getResource("dummy-stream.json").getFile());
+        config.put(BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.FileBootstrapper");
 
         Builder builder = new Builder(config);
 

@@ -4,7 +4,7 @@ layout: single
 toc: true
 ---
 
-On this section, we are trying to explain how to develop your own [joiners](http://wizzie-io.github.io/enricher/joiners/base_joiners.html).
+On this section, we are trying to explain how to develop your own [joiners](https://wizzie-io.github.io/enricher/joiners_enrichers/joiners).
 
 All the joiners classes implement the [Joiner](https://github.com/wizzie-io/enricher/blob/master/service/src/main/java/io/wizzie/enricher/enrichment/join/Joiner.java) interface.
 
@@ -24,7 +24,7 @@ The abstract class has one method:
 
 ```java
     public Map<String, Object> join(Map<String, Object> stream, Map<String, Object> table) {
-        // Join logic that return a new Map   
+        // Join logic that return a new Map
     }
 ```
 

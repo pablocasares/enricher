@@ -27,7 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPER_CLASSNAME;
+import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPPER_CLASSNAME;
 import static io.wizzie.enricher.enrichment.utils.Constants.*;
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
@@ -93,7 +93,7 @@ public class MacVendorEnrichIntegrationTest {
         streamsConfiguration.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1);
 
         Config configuration = new Config(streamsConfiguration);
-        configuration.put(BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
+        configuration.put(BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
         configuration.put(KafkaBootstrapper.BOOTSTRAP_TOPICS_CONFIG, Arrays.asList(BOOTSTRAP_TOPIC));
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

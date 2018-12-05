@@ -1,7 +1,7 @@
 package io.wizzie.enricher.base.builder.config;
 
 public class ConfigProperties {
-    public static final String BOOTSTRAPER_CLASSNAME = "bootstraper.classname";
+    public static final String BOOTSTRAPPER_CLASSNAME = "bootstrapper.classname";
     public static final String METRIC_ENABLE = "metric.enable";
     public static final String METRIC_LISTENERS = "metric.listeners";
     public static final String METRIC_INTERVAL = "metric.interval";

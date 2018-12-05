@@ -1,0 +1,8 @@
+{
+  "joiners":[
+    {"name":"joinerStream", "className":"io.wizzie.enricher.enrichment.join.impl.StreamPreferredJoiner"}
+  ],
+  "queries": {
+    "query1": "SELECT * FROM STREAM input JOIN FROM GLOBAL TABLE scores USING joinerStream INSERT INTO STREAM output"
+  }
+}

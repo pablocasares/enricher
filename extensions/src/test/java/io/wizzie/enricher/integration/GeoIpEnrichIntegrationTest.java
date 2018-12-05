@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GeoIpEnrichIntegrationTest {
-    private final static int NUM_BROKERS = 1;
+   private final static int NUM_BROKERS = 1;
 
     @ClassRule
     public static EmbeddedKafkaCluster CLUSTER = new EmbeddedKafkaCluster(NUM_BROKERS);
@@ -90,22 +90,16 @@ public class GeoIpEnrichIntegrationTest {
         streamsConfiguration.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1);
 
         Config configuration = new Config(streamsConfiguration);
-        configuration.put(ConfigProperties.BOOTSTRAPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
+        configuration.put(ConfigProperties.BOOTSTRAPPER_CLASSNAME, "io.wizzie.bootstrapper.bootstrappers.impl.KafkaBootstrapper");
         configuration.put(KafkaBootstrapper.BOOTSTRAP_TOPICS_CONFIG, Arrays.asList(BOOTSTRAP_TOPIC));
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         Map<String, Object> geoIpProperties = new HashMap<>();
-        geoIpProperties.put(ASN_DB_PATH, classLoader.getResource("asn.dat").getPath());
-        geoIpProperties.put(ASN6_DB_PATH, classLoader.getResource("asnv6.dat").getPath());
-        geoIpProperties.put(CITY_DB_PATH, classLoader.getResource("city.dat").getPath());
-        geoIpProperties.put(CITY6_DB_PATH, classLoader.getResource("cityv6.dat").getPath());
-        geoIpProperties.put(SRC_COUNTRY_CODE_DIM, "src_country_code");
-        geoIpProperties.put(DST_COUNTRY_CODE_DIM, "dst_country_code");
-        geoIpProperties.put(SRC_DIM, "src");
-        geoIpProperties.put(DST_DIM, "dst");
-        geoIpProperties.put(SRC_AS_NAME_DIM, "src_as_name");
-        geoIpProperties.put(DST_AS_NAME_DIM, "dst_as_name");
+        geoIpProperties.put(ASN_DB_PATH, classLoader.getResource("GeoLite2-ASN.mmdb").getPath());
+        geoIpProperties.put(CITY_DB_PATH, classLoader.getResource("GeoLite2-City.mmdb").getPath());
+        geoIpProperties.put("src.dim", "src");
+        geoIpProperties.put("dst.dim", "dst");
 
         Map<String, Object> geoIpEnricher = new HashMap<>();
         geoIpEnricher.put("name", "geoipEnrich");
@@ -142,13 +136,12 @@ public class GeoIpEnrichIntegrationTest {
         expectedData.put("dst", "8.8.4.4");
         expectedData.put("dst_country_code", "US");
         expectedData.put("src_country_code", "US");
-        expectedData.put("dst_as_name", "Google Inc.");
-        expectedData.put("src_as_name", "Google Inc.");
-        expectedData.put("src_city", "Mountain View");
-        expectedData.put("src_longitude", -122.0838);
-        expectedData.put("src_latitude", 37.386);
-        expectedData.put("dst_longitude", -97.0);
-        expectedData.put("dst_latitude", 38.0);
+        expectedData.put("dst_as_name", "Google LLC");
+        expectedData.put("src_as_name", "Google LLC");
+        expectedData.put("src_longitude", -97.822);
+        expectedData.put("src_latitude", 37.751);
+        expectedData.put("dst_longitude", -97.822);
+        expectedData.put("dst_latitude", 37.751);
 
         KeyValue<String, Map<String, Object>> expectedDataKv = new KeyValue<>("KEY_A", expectedData);
 

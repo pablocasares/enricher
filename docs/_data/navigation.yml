@@ -13,7 +13,7 @@ docs:
       - title: Stream Configuration
         url: /configuration/stream_configuration
       - title: Enrichment Query Language
-        url: /configuration/sql_syntax
+        url: /configuration/eql_syntax
       - title: Bootstrapper
         url: /configuration/bootstrapper
       - title: Metrics

@@ -79,7 +79,7 @@ public class EnricherCompilerUnitTest {
         String stringQuery = "SELECT * FROM STREAM input " +
                 "JOIN SELECT a,b,c FROM STREAM input2 USING jClass1 " +
                 "JOIN SELECT * FROM TABLE input3 USING jClass2 " +
-                "JOIN SELECT x,y FROM STREAM input4 USING jClass3 " +
+                "JOIN FROM GLOBAL TABLE input4 USING jClass3 " +
                 "INSERT INTO TABLE output";
 
         Query query = EnricherCompiler.parse(stringQuery);
@@ -150,14 +150,14 @@ public class EnricherCompilerUnitTest {
         List<String> joinDimensions3 = joins.get(2).getDimensions();
 
         assertNotNull(joinDimensions3);
-        assertEquals(2, joinDimensions3.size());
-        assertEquals(Arrays.asList("x", "y"), joinDimensions3);
+        assertEquals(0, joinDimensions3.size());
 
         Stream joinStream3 = joins.get(2).getStream();
 
         assertNotNull(joinStream3);
         assertEquals("input4", joinStream3.getName());
-        assertFalse(joinStream3.isTable());
+        assertTrue(joinStream3.isTable());
+        assertTrue(joinStream3.isGlobalTable());
 
         String joinerClass3 = joins.get(2).getJoinerName();
 
