@@ -3,7 +3,6 @@ package io.wizzie.enricher.integration;
 import io.wizzie.bootstrapper.builder.Config;
 import io.wizzie.enricher.base.builder.config.ConfigProperties;
 import io.wizzie.enricher.builder.Builder;
-import io.wizzie.enricher.query.antlr4.Stream;
 import io.wizzie.enricher.serializers.JsonDeserializer;
 import io.wizzie.enricher.serializers.JsonSerde;
 import io.wizzie.enricher.serializers.JsonSerializer;

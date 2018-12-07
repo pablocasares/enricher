@@ -28,7 +28,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import static io.wizzie.enricher.enrichment.utils.Constants.*;
+import static io.wizzie.enricher.enrichment.utils.Constants.ASN_DB_PATH;
+import static io.wizzie.enricher.enrichment.utils.Constants.CITY_DB_PATH;
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
