@@ -30,7 +30,6 @@ import static io.wizzie.enricher.base.builder.config.ConfigProperties.BOOTSTRAPP
 import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class NullKeyJoinIntegrationTest {
     private final static int NUM_BROKERS = 1;

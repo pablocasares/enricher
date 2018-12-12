@@ -4,7 +4,7 @@
 
     <groupId>io.wizzie.enricher</groupId>
     <artifactId>enricher</artifactId>
-    <version>0.5.1.2-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
