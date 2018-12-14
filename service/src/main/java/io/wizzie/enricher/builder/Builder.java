@@ -36,6 +36,7 @@ public class Builder implements Listener {
     KafkaStreams streams;
     MetricsManager metricsManager;
     Bootstrapper bootstrapper;
+    Thread streamMonitor;
 
     public Builder(Config config) throws Exception {
         this.config = config;
@@ -196,6 +197,9 @@ public class Builder implements Listener {
 
             streams.cleanUp();
             streams.start();
+
+            streamMonitor = new Thread(new StreamMonitor(this));
+            streamMonitor.start();
 
             registerKafkaMetrics(config, metricsManager);
 
