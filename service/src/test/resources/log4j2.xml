@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="warn" name="MyApp" packages="">
+<Configuration status="warn" name="MyApp" packages="" shutdownHook="disable">
     <Appenders>
         <Console name="ConsoleProject" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %highlight{%p} [%c{3.}] %highlight{%m{ansi}}%n"/>
