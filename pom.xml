@@ -4,7 +4,7 @@
 
     <groupId>io.wizzie.enricher</groupId>
     <artifactId>enricher</artifactId>
-    <version>0.6.1-SNAPSHOT</version>
+    <version>0.6.1</version>
 
     <packaging>pom</packaging>
 
@@ -59,7 +59,7 @@
     <scm>
         <developerConnection>scm:git:git@github.com:wizzie-io/enricher.git</developerConnection>
         <connection>scm:git:git@github.com:wizzie-io/enricher.git</connection>
-        <tag>HEAD</tag>
+        <tag>enricher-0.6.1</tag>
         <url>git@github.com:wizzie-io/enricher.git</url>
     </scm>
 
