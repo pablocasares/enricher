@@ -20,6 +20,8 @@ docs:
         url: /configuration/metrics
       - title: Multi Tenant
         url: /configuration/multi_tenant
+      - title: How to scale
+        url: /configuration/scalability
 
   - title: Joiners & Enrichers
     children:
