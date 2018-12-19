@@ -67,9 +67,11 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             gcloud config set project $GCLOUD_PROJECT
-            docker tag ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:latest
             gcloud auth configure-docker --quiet
-            mvn -s .circleci/maven-settings.xml deploy -P docker -DskipTests
+            docker tag ${APP_NAME}:latest wizzieio/${APP_NAME}:latest
+            docker tag ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:latest
+            docker push gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:latest
+            docker push wizzieio/${APP_NAME}:latest
 
   tagged-deploy:
     <<: *preconfiguration
@@ -88,9 +90,15 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             gcloud config set project $GCLOUD_PROJECT
-            docker tag ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
             gcloud auth configure-docker --quiet
-            gcloud container images add-tag gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:${CIRCLE_TAG}
+            docker tag ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
+            docker tag ${APP_NAME}:latest wizzieio/${APP_NAME}:stable
+            docker push ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
+            docker push wizzieio/${APP_NAME}:stable
+            CIRCLETAG="$(echo $CIRCLE_TAG | sed 's/enricher-//g')"
+            gcloud container images add-tag gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:${CIRCLETAG}
+            docker tag ${APP_NAME}:latest wizzieio/${APP_NAME}:${CIRCLETAG}
+            docker push ${APP_NAME}:latest wizzieio/${APP_NAME}:${CIRCLETAG}
 workflows:
   version: 2
   build-n-deploy:
