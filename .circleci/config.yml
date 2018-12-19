@@ -93,12 +93,12 @@ jobs:
             gcloud auth configure-docker --quiet
             docker tag ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
             docker tag ${APP_NAME}:latest wizzieio/${APP_NAME}:stable
-            docker push ${APP_NAME}:latest gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
+            docker push gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable
             docker push wizzieio/${APP_NAME}:stable
             CIRCLETAG="$(echo $CIRCLE_TAG | sed 's/enricher-//g')"
             gcloud container images add-tag gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:stable gcr.io/${GCLOUD_PROJECT}/${APP_NAME}:${CIRCLETAG}
             docker tag ${APP_NAME}:latest wizzieio/${APP_NAME}:${CIRCLETAG}
-            docker push ${APP_NAME}:latest wizzieio/${APP_NAME}:${CIRCLETAG}
+            docker push wizzieio/${APP_NAME}:${CIRCLETAG}
 workflows:
   version: 2
   build-n-deploy:
