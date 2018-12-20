@@ -17,7 +17,7 @@ Stream configuration has three main sections: enrichers, joiners and queries
     {"name":"streamPreferredJoiner", "className":"io.wizzie.enricher.enrichment.join.impl.StreamPreferredJoiner"}
   ],
   "queries": {
-    "query1": "SELECT a,c,k,j FROM STREAM stream1, stream2 JOIN SELECT v FROM TABLE table1 USING streamPreferred INSERT INTO TABLE output"
+    "query1": "SELECT a,c,k,j FROM STREAM stream1, stream2 JOIN SELECT v FROM TABLE table1 USING streamPreferredJoiner INSERT INTO TABLE output"
   }
 }
 ```
