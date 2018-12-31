@@ -75,3 +75,5 @@ buildNumber.properties
 gen
 docs/.sass-cache/
 *.tokens
+
+.DS_Store
