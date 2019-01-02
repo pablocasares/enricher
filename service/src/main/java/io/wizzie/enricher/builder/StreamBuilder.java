@@ -37,6 +37,7 @@ public class StreamBuilder {
     MetricsManager metricsManager;
     Config config;
     Map<String, KStream<String, Map<String, Object>>> streams;
+    Map<String, KStream<String, Map<String, Object>>> streamsBypass = new HashMap<>();
     Map<String, KTable<String, Map<String, Object>>> tables;
     Map<String, GlobalKTable<String, Map<String, Object>>> globalTables;
     Map<String, Joiner> joiners = new HashMap<>();
@@ -137,12 +138,7 @@ public class StreamBuilder {
 
                 stream = splitBranch[0];
 
-                String outputStream = entry.getValue().getInsert().getName();
-                if (config.getOrDefault(ConfigProperties.MULTI_ID, false)) {
-                    outputStream = String.format("%s_%s", appId, outputStream);
-                }
-
-                splitBranch[1].to(outputStream);
+                streamsBypass.put(entry.getKey(), splitBranch[1]);
             }
 
             streams.put(entry.getKey(), stream);
@@ -301,7 +297,6 @@ public class StreamBuilder {
 
             enrichWiths.forEach(enrichName -> {
                 KStream<String, Map<String, Object>> stream = streams.get(entry.getKey());
-
                 Enrich enrich = enrichers.get(enrichName);
                 if (enrich == null) throw new EnricherNotFound("Enricher " + enrichName + " not found!");
 
@@ -312,6 +307,19 @@ public class StreamBuilder {
                 }
 
                 streams.put(entry.getKey(), stream);
+
+                if (!streamsBypass.isEmpty() && streamsBypass.get(entry.getKey()) != null) {
+                    KStream<String, Map<String, Object>> streamBypass = streamsBypass.get(entry.getKey());
+                    enrich = enrichers.get(enrichName);
+                    if (enrich == null) throw new EnricherNotFound("Enricher " + enrichName + " not found!");
+
+                    if (enrich instanceof BaseEnrich) {
+                        streamBypass = streamBypass.mapValues((BaseEnrich) enrich);
+                    } else {
+                        log.error("WTF!! The enricher {} isn't a enricher!", enrichName);
+                    }
+                    streamsBypass.put(entry.getKey(), streamBypass);
+                }
             });
         });
     }
@@ -335,6 +343,10 @@ public class StreamBuilder {
             }
 
             stream.to(outputStream);
+
+            if (!streamsBypass.isEmpty() && streamsBypass.get(entry.getKey()) != null) {
+                streamsBypass.get(entry.getKey()).to(outputStream);
+            }
         });
     }
 
