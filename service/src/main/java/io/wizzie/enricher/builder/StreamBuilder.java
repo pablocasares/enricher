@@ -316,7 +316,7 @@ public class StreamBuilder {
                     if (enrich instanceof BaseEnrich) {
                         streamBypass = streamBypass.mapValues((BaseEnrich) enrich);
                     } else {
-                        log.error("WTF!! The enrich {} isn't a enrich!", enrichName);
+                        log.error("WTF!! The enricher {} isn't a enricher!", enrichName);
                     }
                     streamsBypass.put(entry.getKey(), streamBypass);
                 }
