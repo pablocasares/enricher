@@ -13,5 +13,14 @@
   "max.output.kafka.topics": ${MAX_OUTPUT_KAFKA_TOPICS},
   "bootstrap.kafka.topics": ${BOOTSTRAP_KAFKA_TOPICS},
   "global.topics": ${GLOBAL_TOPICS},
-  "bypass.null.keys": ${BYPASS_NULL_KEYS}
+  "bypass.null.keys": ${BYPASS_NULL_KEYS},
+  "producer.buffer.memory": ${PRODUCER_BUFFER_MEMORY},
+  "consumer.fetch.max.bytes": ${CONSUMER_FETCH_MAX_BYTES},
+  "consumer.max.poll.records": ${CONSUMER_MAX_POLL_RECORDS},
+  "consumer.fetch.max.wait.ms": ${CONSUMER_FETCH_MAX_WAIT_MS},
+  "consumer.send.buffer.bytes": ${CONSUMER_SEND_BUFFER_BYTES},
+  "consumer.receive.buffer.bytes": ${CONSUMER_RECEIVE_BUFFER_BYTES},
+  "producer.send.buffer.bytes": ${PRODUCER_SEND_BUFFER_BYTES},
+  "producer.receive.buffer.bytes": ${PRODUCER_RECEIVE_BUFFER_BYTES},
+  "buffered.records.per.partition": ${BUFFERED_RECORDS_PER_PARTITION}
 }

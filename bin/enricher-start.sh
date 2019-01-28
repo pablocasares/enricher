@@ -14,4 +14,6 @@ do
     CLASSPATH=${CLASSPATH}:${file}
 done
 
+[ -z "$JVM_OPTIONS" ] && JVM_OPTIONS="-Djdk.nio.maxCachedBufferSize=262144 -Xmx30m -Xms30m -XX:MaxDirectMemorySize=15m -XX:MaxMetaspaceSize=30m -XX:SurvivorRatio=6 -Xss512k -XX:ReservedCodeCacheSize=15m -XX:NewSize=15m"
+
 exec java ${JVM_OPTIONS} -cp ${CLASSPATH} io.wizzie.enricher.Enricher $1
