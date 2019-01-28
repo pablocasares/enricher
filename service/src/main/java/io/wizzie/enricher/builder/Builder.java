@@ -159,51 +159,55 @@ public class Builder implements Listener {
         }
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            PlanModel model = objectMapper.readValue(streamConfig, PlanModel.class);
-            log.info("Execution plan: {}", model.printExecutionPlan());
-            log.info("-------- TOPOLOGY BUILD START --------");
-            StreamsBuilder builder = streamBuilder.builder(model);
-            log.info("--------  TOPOLOGY BUILD END  --------");
+            if (streamConfig == null) {
+                log.info("-------- STOPPED ENRICHER PROCESSING --------");
+            } else {
+                ObjectMapper objectMapper = new ObjectMapper();
+                PlanModel model = objectMapper.readValue(streamConfig, PlanModel.class);
+                log.info("Execution plan: {}", model.printExecutionPlan());
+                log.info("-------- TOPOLOGY BUILD START --------");
+                StreamsBuilder builder = streamBuilder.builder(model);
+                log.info("--------  TOPOLOGY BUILD END  --------");
 
-            Config configWithNewAppId = config.clone();
-            String appId = configWithNewAppId.get(APPLICATION_ID_CONFIG);
-            configWithNewAppId.put(APPLICATION_ID_CONFIG, String.format("%s_%s", appId, "enricher"));
-            configWithNewAppId.put(CLIENT_ID_CONFIG, String.format("%s_%s", appId, "enricher"));
+                Config configWithNewAppId = config.clone();
+                String appId = configWithNewAppId.get(APPLICATION_ID_CONFIG);
+                configWithNewAppId.put(APPLICATION_ID_CONFIG, String.format("%s_%s", appId, "enricher"));
+                configWithNewAppId.put(CLIENT_ID_CONFIG, String.format("%s_%s", appId, "enricher"));
 
-            Properties properties = configWithNewAppId.getProperties();
+                Properties properties = configWithNewAppId.getProperties();
 
-            properties.put(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG), Integer.MAX_VALUE);
-            properties.put(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG), Integer.MAX_VALUE);
-            properties.put(StreamsConfig.REQUEST_TIMEOUT_MS_CONFIG, 305000);
-            properties.put(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
-                    Integer.MAX_VALUE);
+                properties.put(StreamsConfig.producerPrefix(ProducerConfig.RETRIES_CONFIG), Integer.MAX_VALUE);
+                properties.put(StreamsConfig.producerPrefix(ProducerConfig.MAX_BLOCK_MS_CONFIG), Integer.MAX_VALUE);
+                properties.put(StreamsConfig.REQUEST_TIMEOUT_MS_CONFIG, 305000);
+                properties.put(StreamsConfig.consumerPrefix(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG),
+                        Integer.MAX_VALUE);
 
-            properties.put(TOPOLOGY_OPTIMIZATION, "all");
+                properties.put(TOPOLOGY_OPTIMIZATION, "all");
 
-            log.info(builder.build().describe().toString());
+                log.info(builder.build().describe().toString());
 
-            streams = new KafkaStreams(builder.build(), properties);
-            streams.setUncaughtExceptionHandler((thread, exception) -> {
-                log.error(exception.getMessage(), exception);
-                log.info("Stopping enricher engine");
-                try {
-                    close();
-                } catch (Exception e) {
-                    log.error(e.getMessage(), exception);
-                }
-                log.info("Closing enricher engine");
-            });
+                streams = new KafkaStreams(builder.build(), properties);
+                streams.setUncaughtExceptionHandler((thread, exception) -> {
+                    log.error(exception.getMessage(), exception);
+                    log.info("Stopping enricher engine");
+                    try {
+                        close();
+                    } catch (Exception e) {
+                        log.error(e.getMessage(), exception);
+                    }
+                    log.info("Closing enricher engine");
+                });
 
-            streams.cleanUp();
-            streams.start();
+                streams.cleanUp();
+                streams.start();
 
-            streamMonitor = new Thread(new StreamMonitor(this));
-            streamMonitor.start();
+                streamMonitor = new Thread(new StreamMonitor(this));
+                streamMonitor.start();
 
-            registerKafkaMetrics(config, metricsManager);
+                registerKafkaMetrics(config, metricsManager);
 
-            log.info("Started Enricher with conf {}", config.getProperties());
+                log.info("Started Enricher with conf {}", config.getProperties());
+            }
         } catch (PlanBuilderException | IOException e) {
             log.error(e.getMessage(), e);
         }

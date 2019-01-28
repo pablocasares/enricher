@@ -45,7 +45,6 @@ public class StreamMonitor extends Thread {
                     try {
                         Thread.sleep(60000);
                     } catch (InterruptedException e) {
-                        log.error(e.getMessage(), e);
                     }
                 }
             }else {
