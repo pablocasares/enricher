@@ -33,7 +33,7 @@ public class Builder implements Listener {
     private static final Logger log = LoggerFactory.getLogger(Builder.class);
     Config config;
     StreamBuilder streamBuilder;
-    KafkaStreams streams;
+    public KafkaStreams streams;
     MetricsManager metricsManager;
     Bootstrapper bootstrapper;
     Thread streamMonitor;
@@ -159,9 +159,10 @@ public class Builder implements Listener {
         }
 
         try {
-            if (streamConfig == null) {
+            if (streamConfig == null && streams != null) {
                 log.info("-------- STOPPED ENRICHER PROCESSING --------");
-            } else {
+                streams = null;
+            } else if (streamConfig != null){
                 ObjectMapper objectMapper = new ObjectMapper();
                 PlanModel model = objectMapper.readValue(streamConfig, PlanModel.class);
                 log.info("Execution plan: {}", model.printExecutionPlan());
